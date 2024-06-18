@@ -13,6 +13,8 @@ These dotfiles are my base configuration for the following tools.
 - [cask-fonts](https://github.com/Homebrew/homebrew-cask-fonts)
 - [Neovim](https://neovim.io)
 - [LazyVim](https://www.lazyvim.org)
+- [Git](https://git-scm.com)
+- [Lazygit](https://github.com/jesseduffield/lazygit)
 - [Tmux](https://github.com/tmux/tmux)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
@@ -32,7 +34,7 @@ your distribution conventions to install the tools.
 
 ```bash
 brew tap homebrew/cask-fonts
-brew install git alacritty starship fzf fd eza bat zoxide font-meslo-lg-nerd-font neovim tmux zsh-autosuggestions zsh-syntax-highlighting stow
+brew install git lazygit alacritty starship fzf fd eza bat zoxide font-meslo-lg-nerd-font neovim tmux zsh-autosuggestions zsh-syntax-highlighting stow
 ```
 
 After tools installation, clone this repository to `.dotfiles` in your home directory.
