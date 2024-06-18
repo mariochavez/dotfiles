@@ -27,6 +27,8 @@ other languages features specific with extra packages from LazyVim.
 
 Shell, Terminal, are tools were setup for my best experience working with code, but they also looks good.
 
+![Alacritty terminal with Neovim](screen.png)
+
 ## Tools installation
 
 If you use MacOS, please install [Homebrew](https://brew.sh) and follow the following steps. If you use Linux follow
