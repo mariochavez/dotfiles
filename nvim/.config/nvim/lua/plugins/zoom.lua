@@ -1,5 +1,6 @@
 return {
   {
-    "dhruvasagar/vim-zoom",
+    "fasterius/simple-zoom.nvim",
+    config = true,
   },
 }
