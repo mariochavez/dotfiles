@@ -65,6 +65,7 @@ return {
     "nvim-neotest/neotest",
     dependencies = {
       "olimorris/neotest-rspec",
+      "zidhuss/neotest-minitest",
       "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
@@ -74,6 +75,7 @@ return {
       require("neotest").setup({
         adapters = {
           require("neotest-rspec"),
+          require("neotest-minitest"),
         },
       })
     end,
