@@ -25,5 +25,8 @@ size = 14
 
 [keyboard]
 bindings = [
-  { key = "F11", action = "ToggleFullscreen" }
+  { key = "F11", action = "ToggleFullscreen" },
+  { key = "e", mods = "Alt", chars = "\u001Be" },
+  # { key = "é",     mods = "Alt",           chars   = "\u001bé" },
 ]
+

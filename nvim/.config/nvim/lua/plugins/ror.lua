@@ -84,9 +84,9 @@ return {
     "folke/which-key.nvim",
     optional = true,
     opts = {
-      defaults = {
-        ["<leader>r"] = { name = "Ruby on Rails" },
-        ["<leader>t"] = { name = "Tests" },
+      spec = {
+        { "<leader>r", group = "Ruby on Rails" },
+        { "<leader>t", group = "Tests" },
       },
     },
   },
