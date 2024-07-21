@@ -2,7 +2,7 @@ return {
   "nvim-cmp",
   dependencies = {
     "supermaven-inc/supermaven-nvim",
-    build = ":SupermavenUseFree", -- remove this line if you are using pro
+    -- build = ":SupermavenUseFree", -- remove this line if you are using pro
     opts = {},
   },
   ---@param opts cmp.ConfigSchema
