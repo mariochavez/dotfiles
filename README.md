@@ -3,7 +3,7 @@
 These dotfiles are my base configuration for the following tools.
 
 - [Zsh](https://www.zsh.org)
-- [Alacritty](https://alacritty.org)
+- [Kitty](https://sw.kovidgoyal.net/kitty/)
 - [Starship](https://starship.rs)
 - [fzf](https://github.com/junegunn/fzf)
 - [fd](https://github.com/sharkdp/fd)
@@ -48,7 +48,7 @@ git clone https://github.com/mariochavez/dotfiles .dotfiles
 Change to the `.dotfiles` directory and use the `stow` command to configure your environment.
 
 ```bash
-stow alacritty bat nvim starship tmux zsh
+stow kitty bat nvim starship tmux zsh
 ```
 
 Close your terminal and open the Alacritty terminal, you should be ready with your new setup.
