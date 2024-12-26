@@ -7,4 +7,5 @@ vim.opt["relativenumber"] = true
 
 vim.opt.pumblend = 0 -- Remove transparency to autocomplete
 
--- vim.g.autoformat = false 
+-- vim.g.autoformat = false
+-- vim.g.snacks_animate = false
