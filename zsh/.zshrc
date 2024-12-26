@@ -115,3 +115,20 @@ eval "$(zoxide init zsh)"
 alias cd="z"
 alias gfp="git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d"
 BAT_THEME="Catppuccin Mocha"
+
+source /Users/marioch/.docker/init-zsh.sh || true # Added by Docker Desktop
+
+# Increase history size
+HISTSIZE=1000000
+SAVEHIST=2000000
+HISTFILE=~/.zsh_history
+
+# Share history between sessions
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+
+# Avoid duplicate commands in history
+setopt HIST_IGNORE_DUPS       # Ignore duplicate commands
+setopt HIST_IGNORE_SPACE      # Ignore commands starting with a space
+setopt HIST_SAVE_NO_DUPS      # Remove duplicates when saving history
+setopt HIST_REDUCE_BLANKS     # Remove unnecessary blanks
