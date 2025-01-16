@@ -37,6 +37,7 @@ return {
       spec = {
         { "<leader>r", group = "Ruby on Rails" },
         { "<leader>t", group = "Tests" },
+        { "<leader>a", group = "AI" },
       },
     },
   },
