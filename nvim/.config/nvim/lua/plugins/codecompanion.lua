@@ -4,10 +4,29 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
-      "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
-      { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } }, -- Optional: For prettier markdown rendering
+      -- "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
+      -- { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } }, -- Optional: For prettier markdown rendering
       { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
+      {
+        "saghen/blink.cmp",
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+          sources = {
+            default = { "codecompanion" },
+            providers = {
+              codecompanion = {
+                name = "CodeCompanion",
+                module = "codecompanion.providers.completion.blink",
+                enabled = true,
+              },
+            },
+          },
+        },
+        opts_extend = {
+          "sources.default",
+        },
+      },
     },
     config = function()
       require("codecompanion").setup({
@@ -44,9 +63,45 @@ return {
         strategies = {
           chat = {
             adapter = "ollama",
+            slash_commands = {
+              ["buffer"] = {
+                opts = {
+                  provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+                },
+              },
+
+              ["file"] = {
+                opts = {
+                  provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+                },
+              },
+
+              ["help"] = {
+                opts = {
+                  provider = "fzf_lua", -- telescope|mini_pick|fzf_lua
+                },
+              },
+
+              ["symbols"] = {
+                opts = {
+                  provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+                },
+              },
+            },
           },
           inline = {
             adapter = "ollama",
+          },
+        },
+        display = {
+          chat = {
+            show_settings = true,
+          },
+          action_palette = {
+            provider = "default", -- default|telescope|mini_pick
+          },
+          diff = {
+            provider = "default", -- default|mini_diff
           },
         },
       })

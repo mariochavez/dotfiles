@@ -41,7 +41,9 @@ return {
     },
   },
   {
-    "weizheheng/ror.nvim",
+    -- "weizheheng/ror.nvim",
+    "mariochavez/ror.nvim",
+    -- dir = "~/Development/libraries/ror.nvim",
     keys = {
       { "<leader>rc", ":lua require('ror.commands').list_commands()<CR>", desc = "Comands" },
       { "<leader>rf", ":lua require('ror.finders').select_finders()<CR>", desc = "Finders" },
