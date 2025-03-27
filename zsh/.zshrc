@@ -25,7 +25,7 @@ alias tmk="tmux kill-session -t $1"
 
 # Ruby and RBenv config options
 eval "$(rbenv init -)"
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
 # Other aliases
 alias lzd='lazydocker'
@@ -116,7 +116,7 @@ alias cd="z"
 alias gfp="git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d"
 BAT_THEME="Catppuccin Mocha"
 
-source /Users/marioch/.docker/init-zsh.sh || true # Added by Docker Desktop
+# source /Users/marioch/.docker/init-zsh.sh || true # Added by Docker Desktop
 
 # Increase history size
 HISTSIZE=1000000

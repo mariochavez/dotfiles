@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Get commit messages from the current week and copy them to the clipboard
+git log --author="mario.chavez@gmail.com" --since="last Friday" --no-merges --pretty=format:"%s%n%b%n" | pbcopy
+
+echo "Commit messages copied to clipboard!"

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Check if a commit SHA was provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <commit-sha>"
+    exit 1
+fi
+
+# Get commit messages from the given SHA to HEAD and copy them to the clipboard
+git log "$1"..HEAD --no-merges --pretty=format:"%s%n%b%n" | pbcopy
+
+echo "Commit messages from $1 to HEAD copied to clipboard!"

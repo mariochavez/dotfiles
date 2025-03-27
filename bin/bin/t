@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Check if zoxide and tmux are installed
+if ! command -v zoxide &>/dev/null || ! command -v tmux &>/dev/null; then
+	echo "zoxide and tmux are required but not installed. Exiting."
+	exit 1
+fi
+
+# Ensure the directory name is passed as an argument
+if [ -z "$1" ]; then
+	echo "Usage: $0 <directory_name>"
+	exit 1
+fi
+
+# Resolve the full path using zoxide
+FULL_PATH=$(zoxide query "$1")
+
+# Check if the path is valid
+if [ -z "$FULL_PATH" ]; then
+	echo "Directory '$1' not found using zoxide."
+	exit 1
+fi
+
+# Get the directory name from the full path
+DIR_NAME=$(basename "$FULL_PATH")
+
+# Check if a tmux session with the current directory name already exists
+tmux has-session -t "$DIR_NAME" 2>/dev/null
+
+if [ $? != 0 ]; then
+	# If the session does not exist, create a new one
+	tmux new-session -s "$DIR_NAME" -c "$FULL_PATH" -d
+	tmux send-keys -t "$DIR_NAME" "tmux" C-m
+fi
+
+# Attach to the tmux session
+tmux attach -t "$DIR_NAME"

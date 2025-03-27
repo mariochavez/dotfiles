@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Check if a file was provided as an argument
+if [ -z "$1" ]; then
+	echo "Usage: $0 <file>"
+	exit 1
+fi
+
+# Check if the file exists
+if [ ! -f "$1" ]; then
+	echo "Error: File does not exist."
+	exit 1
+fi
+
+# Get the relative path (compatible with macOS and Linux)
+ABS_PATH=$(cd "$(dirname "$1")" && pwd)/$(basename "$1")
+RELATIVE_PATH=$(echo "$ABS_PATH" | sed "s|$(pwd)/||")
+
+# Prepare content for clipboard
+CLIP_CONTENT="Path: $RELATIVE_PATH
+
+Content:
+$(cat "$1")"
+
+# Copy to clipboard based on OS
+type pbcopy &>/dev/null && echo -e "$CLIP_CONTENT" | pbcopy && echo "Copied to clipboard!" && exit 0
+type xclip &>/dev/null && echo -e "$CLIP_CONTENT" | xclip -selection clipboard && echo "Copied to clipboard!" && exit 0
+type wl-copy &>/dev/null && echo -e "$CLIP_CONTENT" | wl-copy && echo "Copied to clipboard!" && exit 0
+
+echo "Error: No clipboard tool found (install pbcopy, xclip, or wl-copy)."
+exit 1

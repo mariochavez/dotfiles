@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Get a diff of stagged files and copy it to the clipboard
+ git diff --cached| pbcopy
+
+echo "Commit stagged files diff to clipboard!"
