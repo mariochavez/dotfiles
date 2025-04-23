@@ -25,7 +25,7 @@ alias tmk="tmux kill-session -t $1"
 
 # Ruby and RBenv config options
 eval "$(rbenv init -)"
-# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3.4)"
 
 # Other aliases
 alias lzd='lazydocker'
