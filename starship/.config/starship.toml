@@ -1,191 +1,289 @@
+# Catppuccin Mocha palette
+palette = "catppuccin_mocha"
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+# Format configurations with applied Catppuccin Mocha colors
+
 [aws]
 format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
+style = "bold peach"
 
 [bun]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold red"
 
 [c]
 format = '\[[$symbol($version(-$name))]($style)\]'
+style = "bold blue"
 
 [cmake]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [cmd_duration]
 format = '\[[⏱ $duration]($style)\]'
+style = "bold yellow"
 
 [cobol]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [conda]
 format = '\[[$symbol$environment]($style)\]'
+style = "bold green"
 
 [crystal]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold red"
 
 [daml]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [dart]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [deno]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold green"
 
 [docker_context]
 format = '\[[$symbol$context]($style)\]'
+style = "bold blue"
 
 [dotnet]
 format = '\[[$symbol($version)(🎯 $tfm)]($style)\]'
+style = "bold purple"
 
 [elixir]
 format = '\[[$symbol($version \(OTP $otp_version\))]($style)\]'
+style = "bold purple"
 
 [elm]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [erlang]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold red"
 
 [fennel]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [fossil_branch]
 format = '\[[$symbol$branch]($style)\]'
+style = "bold purple"
 
 [gcloud]
 format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
+style = "bold blue"
 
 [git_branch]
 format = '\[[$symbol$branch]($style)\]'
+style = "bold lavender"
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style))'
+style = "bold mauve"
 
 [golang]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [gradle]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [guix_shell]
 format = '\[[$symbol]($style)\]'
+style = "bold blue"
 
 [haskell]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold purple"
 
 [haxe]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold orange"
 
 [helm]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold white"
 
 [hg_branch]
 format = '\[[$symbol$branch]($style)\]'
+style = "bold purple"
 
 [java]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold red"
 
 [julia]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold purple"
 
 [kotlin]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [kubernetes]
 format = '\[[$symbol$context( \($namespace\))]($style)\]'
+style = "bold blue"
 
 [lua]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [memory_usage]
 format = '\[$symbol[$ram( | $swap)]($style)\]'
+style = "bold yellow"
 
 [meson]
 format = '\[[$symbol$project]($style)\]'
+style = "bold blue"
 
 [nim]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold yellow"
 
 [nix_shell]
 format = '\[[$symbol$state( \($name\))]($style)\]'
+style = "bold blue"
 
 [nodejs]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold green"
 
 [ocaml]
 format = '\[[$symbol($version)(\($switch_indicator$switch_name\))]($style)\]'
+style = "bold yellow"
 
 [opa]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [openstack]
 format = '\[[$symbol$cloud(\($project\))]($style)\]'
+style = "bold blue"
 
 [os]
 format = '\[[$symbol]($style)\]'
+style = "bold blue"
 
 [package]
 format = '\[[$symbol$version]($style)\]'
+style = "bold 208"
 
 [perl]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [php]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [pijul_channel]
 format = '\[[$symbol$channel]($style)\]'
+style = "bold blue"
 
 [pulumi]
 format = '\[[$symbol$stack]($style)\]'
+style = "bold blue"
 
 [purescript]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold white"
 
 [python]
 format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
+style = "bold yellow"
 
 [raku]
 format = '\[[$symbol($version-$vm_version)]($style)\]'
+style = "bold 149"
 
 [red]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold red"
 
 [ruby]
-format = '\[[ ($version)]($style)\]'
+format = '\[[$symbol($version)]($style)\]'
+symbol = " "
+style = "bold pink"
 
 [rust]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold peach"
 
 [scala]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold red"
 
 [spack]
 format = '\[[$symbol$environment]($style)\]'
+style = "bold blue"
 
 [sudo]
 format = '\[[as $symbol]($style)\]'
+style = "bold red"
 
 [swift]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold 208"
 
 [terraform]
 format = '\[[$symbol$workspace]($style)\]'
+style = "bold 105"
 
 [time]
 format = '\[[$time]($style)\]'
+style = "bold lavender"
 
 [username]
 format = '\[[$user]($style)\]'
+style_user = "bold sapphire"
 
 [vagrant]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [vlang]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
 
 [zig]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold yellow"
 
 [solidity]
 format = '\[[$symbol($version)]($style)\]'
+style = "bold blue"
