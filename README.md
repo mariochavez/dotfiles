@@ -3,7 +3,7 @@
 These dotfiles are my base configuration for the following tools.
 
 - [Zsh](https://www.zsh.org)
-- [Kitty](https://sw.kovidgoyal.net/kitty/)
+- [Ghostty](https://ghostty.org/)
 - [Starship](https://starship.rs)
 - [fzf](https://github.com/junegunn/fzf)
 - [fd](https://github.com/sharkdp/fd)
@@ -36,7 +36,7 @@ your distribution conventions to install the tools.
 
 ```bash
 brew tap homebrew/cask-fonts
-brew install git lazygit alacritty starship fzf fd eza bat zoxide font-meslo-lg-nerd-font neovim tmux zsh-autosuggestions zsh-syntax-highlighting stow
+brew install git lazygit ghostty starship fzf fd eza bat zoxide font-meslo-lg-nerd-font neovim tmux zsh-autosuggestions zsh-syntax-highlighting stow
 ```
 
 After tools installation, clone this repository to `.dotfiles` in your home directory.
@@ -48,7 +48,7 @@ git clone https://github.com/mariochavez/dotfiles .dotfiles
 Change to the `.dotfiles` directory and use the `stow` command to configure your environment.
 
 ```bash
-stow kitty bat nvim starship tmux zsh
+stow ghostty bat nvim starship tmux zsh
 ```
 
-Close your terminal and open the Alacritty terminal, you should be ready with your new setup.
+Close your terminal and open the Ghostty terminal, you should be ready with your new setup.

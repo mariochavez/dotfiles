@@ -1,0 +1,5 @@
+#!/bin/bash
+# cpygitdb - Show git diff + messages and copy to clipboard on macOS
+
+git log main..HEAD -p | pbcopy
+echo "Git diff + commit messages copied to clipboard!"

@@ -6,14 +6,19 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # User configuration
 export EDITOR="nvim"
 
-# Add Homebrew to path
-export PATH="/opt/homebrew/bin":$PATH
-
-# Add Postgresql.app binaries to path
- export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
-
-# Add Redis.app binaries to path
-export PATH="/Applications/Redis.app/Contents/Resources/Vendor/redis/bin:$PATH"
+# Detect OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS specific configurations
+    
+    # Add Homebrew to path
+    export PATH="/opt/homebrew/bin":$PATH
+    
+    # Add Postgresql.app binaries to path
+    export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
+    
+    # Add Redis.app binaries to path
+    export PATH="/Applications/Redis.app/Contents/Resources/Vendor/redis/bin:$PATH"
+fi
 
 # Add local bin folder
 export PATH="$HOME/bin:$PATH"
@@ -23,33 +28,38 @@ alias tml="tmux list-sessions"
 alias tma="tmux -2 attach -t $1"
 alias tmk="tmux kill-session -t $1"
 
-# Ruby and RBenv config options
-eval "$(rbenv init -)"
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3.4)"
+# Ruby and RBenv config options - only if rbenv is installed
+if command -v rbenv &> /dev/null; then
+    eval "$(rbenv init -)"
+    # export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+fi
 
 # Other aliases
 alias lzd='lazydocker'
 alias clean-dir='find . -name "*.orig" -print0 -delete; find . -name "*.un~" -print0 -delete; find . -name "*.orig" -print0 -delete; find . -name "*.DS_Store"; find . -name "*.swp" -print0 -delete; find . -name "*.log" -print0 -delete'
 
 # >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+# Only initialize conda if it's installed
+if [[ -f "/opt/homebrew/Caskroom/miniconda/base/bin/conda" ]] || [[ -f "$HOME/miniconda3/bin/conda" ]] || [[ -f "$HOME/anaconda3/bin/conda" ]]; then
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
     else
-        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+        if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+            . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+        else
+            export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+        fi
     fi
-fi
-unset __conda_setup
+    unset __conda_setup
 
-function prompt_conda_environment() {
-  if [ -n "$CONDA_DEFAULT_ENV" ]; then
-    p10k segment -i '' -f 208 -t $CONDA_DEFAULT_ENV
-  fi
-}
+    function prompt_conda_environment() {
+      if [ -n "$CONDA_DEFAULT_ENV" ]; then
+        p10k segment -i '' -f 208 -t $CONDA_DEFAULT_ENV
+      fi
+    }
+fi
 # <<< conda initialize <<<
 
 eval "$(fzf --zsh)"
@@ -61,10 +71,16 @@ eval "$(starship init zsh)"
 autoload -Uz compinit
 compinit
 
-# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Load zsh-autosuggestions and zsh-syntax-highlighting based on OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS - use Homebrew versions
+    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+    # Linux - use local versions
+    source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
 # Add the git plugin directory to the fpath
 fpath=(~/.zsh/git $fpath)
