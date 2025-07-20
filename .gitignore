@@ -1,1 +1,3 @@
 tmux/.config/tmux/plugins
+zsh/.zsh/zsh-autosuggestions/
+zsh/.zsh/zsh-syntax-highlighting/
