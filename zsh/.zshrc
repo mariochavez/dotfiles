@@ -70,6 +70,15 @@ alias gfp="git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1
 # Add SSH key to ssh-agent
 alias ssh-add-keys="ssh-add -l > /dev/null 2>&1 || ssh-add"
 
+# Start tmux session for MCPs
+alias tmcp="tmux new-session -s mcp"
+
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # Shared clipboard
+  alias pbcopy="~/bin/osc52.sh"
+fi
+
 ########## FUNCTIONS ##########
 
 # Compression
