@@ -41,6 +41,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # Add Redis.app binaries to path
     export PATH="/Applications/Redis.app/Contents/Resources/Vendor/redis/bin:$PATH"
 else
+    export OMARCHY_PATH=~/.local/share/omarchy
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
     # Set complete path
     export PATH="./bin:$HOME/.local/bin:$HOME/.local/share/omarchy/bin:$PATH"
 fi
