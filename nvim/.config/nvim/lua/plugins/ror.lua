@@ -14,22 +14,22 @@ return {
       },
     },
   },
-  {
-    "nvim-neotest/neotest",
-    dependencies = {
-      "olimorris/neotest-rspec",
-      "zidhuss/neotest-minitest",
-      "nvim-neotest/nvim-nio",
-    },
-    config = function()
-      require("neotest").setup({
-        adapters = {
-          require("neotest-rspec"),
-          require("neotest-minitest"),
-        },
-      })
-    end,
-  },
+  -- {
+  --   "nvim-neotest/neotest",
+  --   dependencies = {
+  --     "olimorris/neotest-rspec",
+  --     "zidhuss/neotest-minitest",
+  --     "nvim-neotest/nvim-nio",
+  --   },
+  --   config = function()
+  --     require("neotest").setup({
+  --       adapters = {
+  --         require("neotest-rspec"),
+  --         require("neotest-minitest"),
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     "folke/which-key.nvim",
     optional = true,
