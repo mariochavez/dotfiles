@@ -52,6 +52,10 @@ alias tml="tmux list-sessions"
 alias tma="tmux -2 attach -t $1"
 alias tmk="tmux kill-session -t $1"
 
+# Ruby and RBenv config options
+eval "$(rbenv init -)"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
+
 # Other aliases
 alias lzd='lazydocker'
 alias clean-dir='find . -name "*.orig" -print0 -delete; find . -name "*.un~" -print0 -delete; find . -name "*.orig" -print0 -delete; find . -name "*.DS_Store"; find . -name "*.swp" -print0 -delete; find . -name "*.log" -print0 -delete'
@@ -235,10 +239,13 @@ if [[ -f "/opt/homebrew/Caskroom/miniconda/base/bin/conda" ]] || [[ -f "$HOME/mi
     fi
     unset __conda_setup
 
+# Add this to your ~/.bashrc or ~/.zshrc
     function prompt_conda_environment() {
       if [ -n "$CONDA_DEFAULT_ENV" ]; then
         p10k segment -i '' -f 208 -t $CONDA_DEFAULT_ENV
       fi
     }
+    nvim --listen "$socket_path" "$@"
+}
 fi
 # <<< conda initialize <<<
