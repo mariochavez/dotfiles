@@ -10,6 +10,4 @@ vim.opt.pumblend = 0 -- Remove transparency to autocomplete
 -- vim.g.autoformat = false
 -- vim.g.snacks_animate = false
 
--- vim.opt.clipboard = "unnamedplus"
-set clipboard+=unnamedplus
-vim.g.clipboard = 'osc52'
+vim.opt.clipboard = "unnamedplus"

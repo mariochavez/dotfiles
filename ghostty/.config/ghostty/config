@@ -9,3 +9,4 @@ macos-titlebar-style = hidden
 window-padding-balance = true
 window-colorspace = "display-p3"
 macos-option-as-alt = false
+clipboard-read = true
