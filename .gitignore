@@ -1,3 +1,4 @@
+nvim/.config/nvim/lazyvim.json
 tmux/.config/tmux/plugins
 zsh/.zsh/zsh-autosuggestions/
 zsh/.zsh/zsh-syntax-highlighting/
