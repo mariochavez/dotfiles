@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "railsMcpServer": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://mac-arch.local:6029/mcp/sse",
+        "--allow-http"
+      ]
+    },
+    "nvimMcpServer": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://mac-arch.local:6030/mcp/sse",
+        "--allow-http"
+      ]
+    },
+    "shopify-dev-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@shopify/dev-mcp@latest"
+      ]
+    }
+  }
+}

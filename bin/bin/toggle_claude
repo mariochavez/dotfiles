@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Paths
+CONFIG_DIR="$HOME/Library/Application Support/Claude"
+SYMLINK_PATH="$CONFIG_DIR/claude_desktop_config.json"
+DOTFILES_DIR="$HOME/.dotfiles/claude"
+
+# Detect current link
+current_target=$(readlink "$SYMLINK_PATH")
+
+if [[ "$current_target" == *"local"* ]]; then
+  new_target="$DOTFILES_DIR/claude_config.remote.json"
+  profile="remote"
+else
+  new_target="$DOTFILES_DIR/claude_config.local.json"
+  profile="local"
+fi
+
+# Apply new symlink
+rm -f "$SYMLINK_PATH"
+ln -s "$new_target" "$SYMLINK_PATH"
+echo "🔁 Claude profile switched to: $profile"
