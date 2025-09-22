@@ -55,6 +55,8 @@ alias tma="tmux -2 attach -t $1"
 alias tmk="tmux kill-session -t $1"
 
 # Other aliases
+alias toggle-claude='~/bin/toggle_claude'
+
 alias lzd='lazydocker'
 alias clean-dir='find . -name "*.orig" -print0 -delete; find . -name "*.un~" -print0 -delete; find . -name "*.orig" -print0 -delete; find . -name "*.DS_Store"; find . -name "*.swp" -print0 -delete; find . -name "*.log" -print0 -delete'
 alias yayf="yay -Slq | fzf --multi --preview 'yay -Sii {1}' --preview-window=down:75% | xargs -ro yay -S"
