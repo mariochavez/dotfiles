@@ -1,0 +1,6 @@
+
+[mgr]
+sort_by = "btime"
+sort_reverse = true      # true = reverse order → newest first
+sort_dir_first = true    # or false if you don’t want folders first
+show_hidden = true

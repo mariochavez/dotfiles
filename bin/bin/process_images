@@ -1,0 +1,196 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# ==========================================================
+#  process_images – resize 4×5 images to 15 cm on the long side,
+#  144 dpi, with optional JPEG quality and unsharp‑mask sharpening.
+#
+#  Usage:
+#      ./process_images                # process all supported files in CWD
+#      ./process_images photo.png      # process only the listed file(s)
+#
+#  Options
+#      -q, --quality N          JPEG quality (0‑100, default 90)
+#      -s, --sharpness N        Sigma for the Gaussian blur (default nil – no sharpening)
+#          --x1 N                Flat/jaggy threshold (default 2.0)
+#          --y2 N                Max brightening (default 10.0)
+#          --y3 N                Max darkening (default 20.0)
+#          --m1 N                Slope in flat areas (default 0.0)
+#          --m2 N                Sharpen strength in jagged areas (default 3.0)
+#      -h, --help               Show this help message
+#
+#  Output
+#      All processed images are written to a folder named
+#      “processed” in the current directory. Existing files are
+#      overwritten.
+#
+# ==========================================================
+
+require 'vips'
+require 'optparse'
+require 'fileutils'
+
+# Optional progress bar – falls back to a simple spinner if not present
+begin
+  require 'ruby-progressbar'
+  USE_PROGRESSBAR = true
+rescue LoadError
+  USE_PROGRESSBAR = false
+end
+
+# ------------------------------------
+# Default options
+# ------------------------------------
+options = {
+  quality: 90, # JPEG quality 0‑100
+  sharpness: nil, # sigma – nil means no sharpening
+  x1: 2.0,
+  y2: 10.0,
+  y3: 20.0,
+  m1: 0.0,
+  m2: 3.0,
+  files: []
+}
+
+# ------------------------------------
+# CLI parsing
+# ------------------------------------
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{File.basename(__FILE__)} [options] [file ...]"
+
+  opts.on('-q', '--quality N', Integer,
+          'JPEG quality (0‑100, default 90)') { |v| options[:quality] = v }
+
+  opts.on('-s', '--sharpness N', Float,
+          'Sharpen sigma (default nil – no sharpening)') { |v| options[:sharpness] = v }
+
+  opts.on('--x1 N', Float,
+          'Flat/jaggy threshold (default 2.0)') { |v| options[:x1] = v }
+  opts.on('--y2 N', Float,
+          'Max brightening (default 10.0)') { |v| options[:y2] = v }
+  opts.on('--y3 N', Float,
+          'Max darkening (default 20.0)') { |v| options[:y3] = v }
+  opts.on('--m1 N', Float,
+          'Slope in flat areas (default 0.0)') { |v| options[:m1] = v }
+  opts.on('--m2 N', Float,
+          'Sharpen strength in jagged areas (default 3.0)') { |v| options[:m2] = v }
+
+  opts.on('-h', '--help', 'Show this help message') do
+    puts opts
+    exit
+  end
+end.parse!
+
+# Remaining ARGV are treated as file names
+options[:files] = ARGV
+
+# ------------------------------------
+# If no files supplied, scan the directory for supported types
+# ------------------------------------
+options[:files] = Dir.glob('*.{png,jpeg,jpg,tiff,tif}') if options[:files].empty?
+
+# ------------------------------------
+# Output directory
+# ------------------------------------
+out_dir = File.join(Dir.pwd, 'processed')
+FileUtils.mkdir_p(out_dir)
+
+# ------------------------------------
+# Constants for target size
+# ------------------------------------
+TARGET_CM  = 15.0
+DPI        = 144
+PIX_PER_CM = DPI / 2.54
+TARGET_PIX = 1700.0 # (TARGET_CM * PIX_PER_CM).round # ≈ 850 px
+
+# ------------------------------------
+# Spinner helper (used when no progress bar)
+# ------------------------------------
+SPINNER_FRAMES = %w[| / - \\].freeze
+spinner_idx    = 0
+
+def print_spinner(frame, text)
+  $stdout.write("\r#{frame}  #{text}")
+  $stdout.flush
+end
+
+# ------------------------------------
+# Progress bar (if available)
+# ------------------------------------
+progress_bar = if USE_PROGRESSBAR
+                 ProgressBar.create(
+                   total: options[:files].size,
+                   title: 'Processing images',
+                   format: '%t |%b>>%i| %e',
+                   autofinish: false
+                 )
+               end
+
+# ------------------------------------
+# Main loop
+# ------------------------------------
+options[:files].each do |path|
+  next unless File.file?(path)
+
+  # Spinner / progress bar update
+  if progress_bar
+    progress_bar.increment
+  else
+    print_spinner(SPINNER_FRAMES[spinner_idx % 4], "Loading #{File.basename(path)}…")
+    spinner_idx += 1
+  end
+
+  begin
+    img = Vips::Image.new_from_file(path, access: :sequential)
+  rescue Vips::Error => e
+    warn "\n⚠️  #{path}: #{e}"
+    next
+  end
+
+  # 1️⃣ Resize to 15 cm on the longer side
+  scale = if img.width >= img.height
+            TARGET_PIX.to_f / img.width
+          else
+            TARGET_PIX.to_f / img.height
+          end
+  img = img.resize(scale, kernel: :lanczos3)
+
+  # 2️⃣ Sharpen (unsharp mask) – only if a sigma was supplied
+  if options[:sharpness]
+    img = img.sharpen(
+      sigma: options[:sharpness],
+      x1: options[:x1],
+      y2: options[:y2],
+      y3: options[:y3],
+      m1: options[:m1],
+      m2: options[:m2]
+    )
+  end
+
+  # 3️⃣ Set DPI metadata
+  img = img.copy(xres: DPI, yres: DPI)
+
+  # 4️⃣ Write – format‑specific options
+  out_path = File.join(out_dir, File.basename(path))
+  ext = File.extname(path).downcase
+  case ext
+  when '.jpg', '.jpeg'
+    img.write_to_file(out_path, Q: options[:quality])
+  when '.png'
+    # PNG compression level 0–9 (0 best).  Convert quality 0–100 to that range.
+    png_q = (9 - (options[:quality] * 9 / 100.0)).floor
+    img.write_to_file(out_path, Q: png_q)
+  when '.tif', '.tiff'
+    img.write_to_file(out_path, Q: options[:quality])
+  else
+    img.write_to_file(out_path)
+  end
+end
+
+# Final spinner or progress bar finish
+if progress_bar
+  progress_bar.finish
+  puts "\nAll done!"
+else
+  print_spinner('', "All done!                            \n")
+end

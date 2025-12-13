@@ -1,5 +1,8 @@
 ########## SHELL CONFIGURATION ##########
 
+# Disable Ruby Warnings
+export RUBYOPT="-W0"
+
 # Config directory
 export XDG_CONFIG_HOME="$HOME/.config"
 
@@ -26,7 +29,7 @@ setopt HIST_SAVE_NO_DUPS      # Remove duplicates when saving history
 setopt HIST_REDUCE_BLANKS     # Remove unnecessary blanks
 
 # Add local bin folder
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.cargo/bin:$PATH"
 
 # Detect OS
 if [[ "$OSTYPE" == "darwin"* ]]; then

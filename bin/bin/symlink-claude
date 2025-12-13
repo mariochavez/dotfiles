@@ -1,0 +1,25 @@
+#!/bin/bash
+# symlink-claude
+# Usage: Run from main repo, pass worktree path as argument
+# Example: symlink-claude /path/to/worktree
+
+MAIN_REPO="$(pwd)"
+WORKTREE="${1:?Usage: $0 /path/to/worktree (run from main repo)}"
+
+# Symlink CLAUDE.md
+if [ -f "$MAIN_REPO/CLAUDE.md" ]; then
+  ln -sf "$MAIN_REPO/CLAUDE.md" "$WORKTREE/CLAUDE.md"
+  echo "Linked CLAUDE.md"
+else
+  echo "Warning: CLAUDE.md not found in $MAIN_REPO"
+fi
+
+# Symlink references/
+if [ -d "$MAIN_REPO/references" ]; then
+  ln -sf "$MAIN_REPO/references" "$WORKTREE/references"
+  echo "Linked references/"
+else
+  echo "Warning: references/ not found in $MAIN_REPO"
+fi
+
+echo "Done. Symlinks created in $WORKTREE"
