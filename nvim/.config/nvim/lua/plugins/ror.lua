@@ -1,19 +1,19 @@
 return {
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        ruby_ls = {
-          mason = true,
-        },
-        solargraph = {
-          mason = false,
-          autoformat = false,
-          diagnostic = false,
-        },
-      },
-    },
-  },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   opts = {
+  --     servers = {
+  --       ruby_ls = {
+  --         mason = true,
+  --       },
+  --       solargraph = {
+  --         mason = false,
+  --         autoformat = false,
+  --         diagnostic = false,
+  --       },
+  --     },
+  --   },
+  -- },
   -- {
   --   "nvim-neotest/neotest",
   --   dependencies = {
