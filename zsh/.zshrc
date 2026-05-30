@@ -12,6 +12,9 @@ export EDITOR="nvim"
 # Bat theme
 export BAT_THEME="Catppuccin Mocha"
 
+# Disable Claude Code terminal flicker
+export CLAUDE_CODE_NO_FLICKER=1
+
 # History control
 # Increase history size
 HISTSIZE=1000000
@@ -29,7 +32,7 @@ setopt HIST_SAVE_NO_DUPS      # Remove duplicates when saving history
 setopt HIST_REDUCE_BLANKS     # Remove unnecessary blanks
 
 # Add local bin folder
-export PATH="$HOME/bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.cargo/bin:$PATH"
 
 # Detect OS
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -43,6 +46,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     
     # Add Redis.app binaries to path
     export PATH="/Applications/Redis.app/Contents/Resources/Vendor/redis/bin:$PATH"
+
+    # Add MySql.app binaries to path
+    export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+    export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
+    export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
 else
     export OMARCHY_PATH=~/.local/share/omarchy
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
