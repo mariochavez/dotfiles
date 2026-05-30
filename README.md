@@ -16,6 +16,7 @@ These dotfiles are my base configuration for the following tools.
 - [Git](https://git-scm.com)
 - [Lazygit](https://github.com/jesseduffield/lazygit)
 - [Tmux](https://github.com/tmux/tmux)
+- [herdr](https://herdr.dev/)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [stow](https://www.gnu.org/software/stow/)
@@ -48,7 +49,7 @@ git clone https://github.com/mariochavez/dotfiles .dotfiles
 Change to the `.dotfiles` directory and use the `stow` command to configure your environment.
 
 ```bash
-stow ghostty bat nvim starship tmux zsh
+stow ghostty bat nvim starship tmux zsh herdr
 ```
 
 Close your terminal and open the Ghostty terminal, you should be ready with your new setup.

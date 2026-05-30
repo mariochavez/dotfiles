@@ -1,0 +1,37 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+
+[ui]
+mouse_capture = true
+
+show_agent_labels_on_pane_borders = false
+[advanced]
+# Roughly equivalent to tmux history-limit = 50000 lines (~50 MB scrollback).
+scrollback_limit_bytes = 52428800
+
+[keys]
+# tmux: set -g prefix C-a
+prefix = "ctrl+a"
+
+# tmux: bind | split-window -h   (side-by-side, vertical divider)
+# tmux: bind - split-window -v   (stacked, horizontal divider)
+# Bind to the literal `|` character (what the terminal sends on Shift+\) rather
+# than composing `shift+backslash` keycodes, which doesn't fire on this setup.
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
+
+# tmux: bind h/j/k/l select-pane (vim-tmux-navigator style — no prefix).
+# Note: ctrl+h collides with Backspace in most terminals; if backspace stops
+# working in panes, drop `ctrl+h` and use `prefix+h` for left navigation.
+focus_pane_left = "ctrl+h"
+focus_pane_down = "ctrl+j"
+focus_pane_up = "ctrl+k"
+focus_pane_right = "ctrl+l"
+
+# Pane resizing (tmux used arrow keys with -r repeat).
+# Herdr uses a dedicated resize mode entered via a single keybinding.
+resize_mode = "prefix+r"
+# Reload config: herdr already binds this to `prefix+shift+r` by default
+# (action: reload_config), so no custom command is needed.
