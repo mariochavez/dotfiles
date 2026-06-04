@@ -49,8 +49,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     # Add MySql.app binaries to path
     export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
-    export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
-    export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
+
+    # Call `mysql-env` before building gems that link against mysql-client
+    # (e.g. `mysql2`). Kept out of the global env so it doesn't break other
+    # build tools like Ruby's ./configure.
+    mysql-env() {
+        export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
+        export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
+    }
 else
     export OMARCHY_PATH=~/.local/share/omarchy
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
@@ -227,9 +233,10 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 fi
 
-# Ruby and RBenv config options - only if rbenv is installed
-if command -v rbenv &> /dev/null; then
-    eval "$(rbenv init -)"
+# Ruby and RBenv config options - only if rbenv is installed. Changed to use mise
+if command -v mise &> /dev/null; then
+    # eval "$(rbenv init -)"
+    eval "$(mise activate zsh)"
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
 fi
 
