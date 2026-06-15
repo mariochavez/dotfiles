@@ -5,4 +5,5 @@ idiomatic_version_file_enable_tools = ["ruby"]
 compile = false
 
 [tools]
+node = "lts"
 ruby = "4.0.0"
