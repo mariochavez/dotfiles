@@ -233,32 +233,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 fi
 
-# Ruby and RBenv config options - only if rbenv is installed. Changed to use mise
+# Ruby build options - mise handles Ruby (4.0.0 global) via the activation above
 if command -v mise &> /dev/null; then
-    # eval "$(rbenv init -)"
-    eval "$(mise activate zsh)"
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
-fi
-
-# >>> conda initialize >>>
-# Only initialize conda if it's installed
-if [[ -f "/opt/homebrew/Caskroom/miniconda/base/bin/conda" ]] || [[ -f "$HOME/miniconda3/bin/conda" ]] || [[ -f "$HOME/anaconda3/bin/conda" ]]; then
-    # !! Contents within this block are managed by 'conda init' !!
-    __conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-            . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-        else
-            export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-
-    function prompt_conda_environment() {
-      if [ -n "$CONDA_DEFAULT_ENV" ]; then
-        p10k segment -i '' -f 208 -t $CONDA_DEFAULT_ENV
-      fi
-    }
 fi
