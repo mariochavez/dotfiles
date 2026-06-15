@@ -86,7 +86,7 @@ alias ls="eza --color=always --long --git --icons=always --no-user --no-permissi
 alias cd="z"
 
 # Git aliases
-alias gfp="git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d"
+alias gfp="git fetch --prune && git branch -vv | grep ': gone]' | awk '{print \$1}' | xargs -r git branch -D"
 
 # Add SSH key to ssh-agent
 alias ssh-add-keys="ssh-add -l > /dev/null 2>&1 || ssh-add"

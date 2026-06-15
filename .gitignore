@@ -4,3 +4,4 @@ zsh/.zsh/zsh-autosuggestions/
 zsh/.zsh/zsh-syntax-highlighting/
 .DS_Store
 bin/bin/datatui
+bin/bin/fragua
