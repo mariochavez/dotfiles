@@ -1,0 +1,4 @@
+{
+  "themePath": "/Users/mariochavez/.pi/agent/statusbar-theme.json",
+  "sections": ["directory", "git", "context", "cost", "provider", "model", "thinking"]
+}
