@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+# fragua-host — manage the Fragua agent on Docker or Apple Container.
+#
+# Usage:  fragua-host (-d|-c) [command]
+#
+#   -d, --docker        use Docker / OrbStack
+#   -c, --container     use Apple Container
+#
+# Commands (default: up):
+#   up        create the agent if missing, else start it (idempotent)
+#   down      stop the running agent (container is kept)
+#   restart   stop then start the agent (same container — keeps the old image)
+#   recreate  delete + re-run the container so it picks up a rebuilt image
+#             (run this after `build.sh`; `up`/`restart` reuse the old image)
+#   status    show the agent's state
+#   logs      follow the agent's logs   (Ctrl-C to detach)
+#   shell     open a root shell in the agent
+#             • stopped/missing -> fresh setup VM, secrets READ-WRITE, $PWD at
+#               /host (for setup / restore / rotating the gh token / SSH key)
+#             • running         -> exec into the live agent (secrets READ-ONLY,
+#               no /host); a warning is printed
+#   rm        stop and delete the agent container (named volumes are kept)
+#   help      show this help (also -h, --help; no engine flag required)
+#
+# Examples:
+#   fragua-host -c            # start the agent on Apple Container (idempotent)
+#   fragua-host -d up         # same, on Docker / OrbStack
+#   fragua-host -c down       # stop it
+#   fragua-host -c restart    # bounce it
+#   fragua-host -d recreate   # after a rebuild — pick up the new image
+#   fragua-host -c status     # is it running?
+#   fragua-host -c logs       # tail the agent
+#   fragua-host -c shell      # interactive RW setup shell, $PWD at /host
+#   fragua-host -c rm         # remove the container (volumes survive)
+#   fragua-host help          # show this help
+#
+# Env overrides:  FRAGUA_IMAGE (default local/fragua:latest), FRAGUA_NAME (default fragua-agent)
+set -euo pipefail
+
+IMAGE="${FRAGUA_IMAGE:-local/fragua:latest}"
+NAME="${FRAGUA_NAME:-fragua-agent}"
+VOLUMES=(fragua-config fragua-secrets fragua-workdir fragua-data)
+
+engine=""
+command_="up"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  -d | --docker) engine=docker ;;
+  -c | --container) engine=container ;;
+  --bash) command_=shell ;; # backward-compat alias
+  up | down | stop | restart | recreate | status | logs | shell | bash | rm)
+    command_="$1"
+    ;;
+  help | -h | --help) # print the header comment block (line 2 → first non-comment),
+    # stripping the leading "# "; no engine flag required.
+    awk 'NR>=2 && /^#/ { sub(/^# ?/, ""); print; next } NR>=2 { exit }' "$0"
+    exit 0
+    ;;
+  *)
+    echo "fragua-host: unknown argument: $1" >&2
+    exit 1
+    ;;
+  esac
+  shift
+done
+
+[[ -n "$engine" ]] || {
+  echo "fragua-host: choose an engine: -d (docker) or -c (container)" >&2
+  exit 1
+}
+command -v "$engine" >/dev/null 2>&1 || {
+  echo "fragua-host: '$engine' not found on PATH" >&2
+  exit 1
+}
+
+# Normalize aliases.
+[[ "$command_" == "stop" ]] && command_=down
+[[ "$command_" == "bash" ]] && command_=shell
+
+# state NAME -> echoes: running | stopped | missing
+state() {
+  if [[ "$engine" == "docker" ]]; then
+    local s
+    s="$(docker inspect -f '{{.State.Status}}' "$NAME" 2>/dev/null)" || {
+      echo missing
+      return
+    }
+    case "$s" in running) echo running ;; *) echo stopped ;; esac
+  else
+    local s
+    s="$(container inspect "$NAME" 2>/dev/null |
+      python3 -c 'import sys,json;
+try:
+  print(json.load(sys.stdin)[0]["status"]["state"])
+except Exception:
+  print("missing")' 2>/dev/null)" || s=""
+    case "$s" in running) echo running ;; "" | missing) echo missing ;; *) echo stopped ;; esac
+  fi
+}
+
+ensure_volumes() {
+  for v in "${VOLUMES[@]}"; do
+    "$engine" volume create "$v" >/dev/null 2>&1 || true
+  done
+}
+
+run_detached() {
+  ensure_volumes
+  local common=(
+    -v fragua-config:/fragua-config:rw
+    -v fragua-secrets:/fragua-secrets:ro
+    -v fragua-workdir:/fragua-workdir:rw
+    -v fragua-data:/fragua-data:rw
+  )
+  if [[ "$engine" == "docker" ]]; then
+    docker run -d --name "$NAME" --restart unless-stopped "${common[@]}" "$IMAGE"
+  else
+    container run --name "$NAME" --detach "${common[@]}" "$IMAGE"
+  fi
+}
+
+case "$command_" in
+up)
+  case "$(state)" in
+  running) echo "fragua-host: '$NAME' is already running." ;;
+  stopped)
+    echo "fragua-host: starting existing '$NAME'…"
+    "$engine" start "$NAME"
+    ;;
+  missing)
+    echo "fragua-host: creating '$NAME'…"
+    run_detached
+    ;;
+  esac
+  ;;
+down)
+  case "$(state)" in
+  running) "$engine" stop "$NAME" ;;
+  stopped) echo "fragua-host: '$NAME' is already stopped." ;;
+  missing) echo "fragua-host: '$NAME' does not exist." ;;
+  esac
+  ;;
+restart)
+  [[ "$(state)" == running ]] && "$engine" stop "$NAME"
+  case "$(state)" in
+  missing)
+    echo "fragua-host: creating '$NAME'…"
+    run_detached
+    ;;
+  *) "$engine" start "$NAME" ;;
+  esac
+  ;;
+recreate)
+  # Unlike up/restart (which reuse the existing container, and thus its old
+  # image), this deletes the container and runs a new one from $IMAGE — the way
+  # to adopt a freshly built local/fragua:latest. Named volumes are untouched.
+  if [[ "$(state)" != missing ]]; then
+    echo "fragua-host: recreating '$NAME' from '$IMAGE'…"
+    [[ "$(state)" == running ]] && "$engine" stop "$NAME" >/dev/null 2>&1 || true
+    "$engine" rm "$NAME" >/dev/null 2>&1 || true
+  else
+    echo "fragua-host: creating '$NAME'…"
+  fi
+  run_detached
+  ;;
+status)
+  echo "fragua-host: '$NAME' is $(state)."
+  ;;
+logs)
+  "$engine" logs -f "$NAME"
+  ;;
+rm)
+  [[ "$(state)" == running ]] && "$engine" stop "$NAME" >/dev/null 2>&1 || true
+  "$engine" rm "$NAME"
+  ;;
+shell)
+  # Two cases:
+  #  • agent stopped/missing -> fresh setup VM with secrets RW + $PWD at /host
+  #    (volumes are free, so this is the full setup / restore / rotate shell).
+  #  • agent running         -> the same named volumes can't attach RW to a
+  #    second VM (block device, single RW attach), so exec into the live
+  #    container instead and warn: secrets are RO here and $PWD is NOT mounted.
+  ensure_volumes
+  flag=$([[ "$engine" == docker ]] && echo -d || echo -c)
+  if [[ "$(state)" == running ]]; then
+    {
+      echo "fragua-host: WARNING — '$NAME' is RUNNING."
+      echo "  Attaching to the live agent (exec) instead of a fresh setup VM:"
+      echo "    • /fragua-secrets is READ-ONLY here — you canNOT rotate the gh"
+      echo "      token or SSH key from this shell."
+      echo "    • \$PWD is NOT mounted at /host (no host file copy in/out)."
+      echo "  For the full RW setup shell, stop the agent first:"
+      echo "    fragua-host $flag down   # then re-run:  fragua-host $flag shell"
+    } >&2
+    exec "$engine" exec -it "$NAME" bash
+  else
+    exec "$engine" run --rm -it \
+      -v fragua-config:/fragua-config:rw \
+      -v fragua-secrets:/fragua-secrets:rw \
+      -v fragua-workdir:/fragua-workdir:rw \
+      -v fragua-data:/fragua-data:rw \
+      -v "$PWD":/host \
+      "$IMAGE" bash
+  fi
+  ;;
+esac
