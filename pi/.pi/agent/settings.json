@@ -1,47 +1,17 @@
 {
   "defaultModel": "glm-5.2:cloud",
   "defaultProvider": "ollama",
-  "defaultThinkingLevel": "medium",
   "lastChangelogVersion": "0.80.3",
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-subagents",
     "npm:pi-mcp-adapter",
+    "npm:pi-subagents",
+    "npm:@juanibiapina/pi-extension-settings",
+    "npm:@juanibiapina/pi-powerbar",
+    "npm:@sherif-fanous/pi-catppuccin",
     "npm:pi-intercom",
-    "npm:@spences10/pi-lsp",
-    "npm:pi-ollama-cloud",
-    "git:github.com/kreeger/pi-statusbar"
+    "npm:pi-prompt-template-model",
+    "https://github.com/davebcn87/pi-autoresearch"
   ],
-  "subagents": {
-    "agentOverrides": {
-      "context-builder": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      },
-      "delegate": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      },
-      "oracle": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      },
-      "planner": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      },
-      "researcher": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      },
-      "reviewer": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      },
-      "scout": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      },
-      "worker": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
-      }
-    }
-  },
-  "terminal": {
-    "showTerminalProgress": true
-  },
   "theme": "catppuccin-macchiato"
 }

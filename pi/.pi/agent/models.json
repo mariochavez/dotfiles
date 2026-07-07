@@ -1,16 +1,27 @@
 {
   "providers": {
-    "arch-local": {
+    "mac-arch": {
       "api": "openai-completions",
-      "apiKey": "local-ai",
+      "apiKey": "mac-arch",
       "authHeader": true,
       "baseUrl": "http://192.168.68.109:8080/v1",
+      "default": "qwen3.5-9b",
       "models": [
         {
-          "contextWindow": 131072,
+          "contextWindow": 262144,
+          "cost": {
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "input": 0,
+            "output": 0
+          },
           "id": "qwen3.5-9b",
-          "maxTokens": 16384,
-          "name": "Qwen 3.5 9B (Arch Local)",
+          "input": [
+            "text",
+            "image"
+          ],
+          "maxTokens": 32768,
+          "name": "Qwen3.5-9B (Mac Arch)",
           "reasoning": false
         }
       ]
@@ -26,14 +37,6 @@
           "id": "glm-5.2:cloud",
           "input": [
             "text"
-          ]
-        },
-        {
-          "_launch": true,
-          "id": "qwen3.5:35b-a3b-coding-nvfp4",
-          "input": [
-            "text",
-            "image"
           ],
           "reasoning": true
         }
@@ -44,6 +47,7 @@
       "apiKey": "local-ai",
       "authHeader": true,
       "baseUrl": "http://127.0.0.1:8090/v1",
+      "default": "Qwen3.5-9B-MLX-4bit",
       "models": [
         {
           "contextWindow": 262144,
@@ -53,30 +57,14 @@
             "input": 0,
             "output": 0
           },
-          "id": "Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
-          "input": [
-            "text"
-          ],
-          "maxTokens": 32768,
-          "name": "Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
-          "reasoning": false
-        },
-        {
-          "contextWindow": 262144,
-          "cost": {
-            "cacheRead": 0,
-            "cacheWrite": 0,
-            "input": 0,
-            "output": 0
-          },
-          "id": "Ornith-1.0-35B-5bit-mlx",
+          "id": "Qwen3.5-9B-MLX-4bit",
           "input": [
             "text",
             "image"
           ],
           "maxTokens": 32768,
-          "name": "Ornith 35b",
-          "reasoning": true
+          "name": "Qwen3.5-9B-MLX-4bit",
+          "reasoning": false
         }
       ]
     }

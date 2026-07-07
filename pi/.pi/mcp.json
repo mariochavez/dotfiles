@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mail": {
+      "command": "apple-mail-mcp",
+      "args": [],
+      "env": {
+        "APPLE_MAIL_DEFAULT_ACCOUNT": "iCloud",
+        "APPLE_MAIL_DEFAULT_MAILBOX": "INBOX"
+      }
+    }
+  }
+}
