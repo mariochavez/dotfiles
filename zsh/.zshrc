@@ -162,17 +162,6 @@ web2app-remove() {
 autoload -Uz compinit
 compinit
 
-# Load zsh-autosuggestions and zsh-syntax-highlighting based on OS
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS - use Homebrew versions
-    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-else
-    # Linux - use local versions
-    source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
 # Add the git plugin directory to the fpath
 fpath=(~/.zsh/git $fpath)
 source ~/.zsh/git/git.plugin.zsh
@@ -237,3 +226,15 @@ fi
 if command -v mise &> /dev/null; then
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
 fi
+
+# Load zsh-autosuggestions and zsh-syntax-highlighting based on OS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS - use Homebrew versions
+    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+    # Linux - use local versions
+    source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+

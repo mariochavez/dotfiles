@@ -7,4 +7,5 @@ compile = false
 [tools]
 "github:can1357/oh-my-pi" = "latest"
 node = "lts"
+pipx = "latest"
 ruby = "4.0.0"

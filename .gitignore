@@ -5,3 +5,11 @@ zsh/.zsh/zsh-syntax-highlighting/
 .DS_Store
 bin/bin/datatui
 bin/bin/fragua
+
+# herdr runtime files
+herdr/.config/herdr/*.log
+herdr/.config/herdr/release-notes.json
+herdr/.config/herdr/session.json
+
+# editor/app backups
+*.bak
