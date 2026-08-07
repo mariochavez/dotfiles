@@ -54,3 +54,47 @@ stow ghostty bat nvim starship tmux zsh herdr mise
 ```
 
 Close your terminal and open the Ghostty terminal, you should be ready with your new setup.
+
+## herdr plugins
+
+`stow` only links the herdr configuration. The plugins it refers to live in
+`~/.config/herdr/plugins.json`, which is outside this repository, so they have to be
+installed once per machine. Until you do, the keybindings that invoke their actions
+resolve to nothing.
+
+```bash
+herdr plugin install lmilojevicc/herdr-splits.nvim
+herdr plugin install smarzban/herdr-file-viewer
+```
+
+Then reload the configuration:
+
+```bash
+herdr server reload-config
+```
+
+### herdr-splits
+
+Gives one set of `ctrl+hjkl` that walks across Neovim splits and herdr panes as if they
+were the same layout, with `alt+hjkl` to resize. It is the herdr equivalent of
+`vim-tmux-navigator`, which does not work here: that plugin crosses edges by calling
+`tmux select-pane`, and there is no tmux server inside a herdr pane.
+
+The plugin has two halves that must both be present and agree with each other — the herdr
+side installed above, and the Neovim side in `nvim/.config/nvim/lua/plugins/navigator.lua`,
+which `lazy.nvim` installs on first start. The Neovim half writes
+`~/.config/herdr/plugins/config/herdr-splits/herdr-splits.conf` on every `setup()` so that
+the herdr-side scripts read the same keys; that file is generated and should not be edited
+by hand.
+
+Two things worth knowing:
+
+- `ctrl+l` no longer reaches the shell as clear-screen, since herdr claims it in non-Neovim
+  panes. `prefix+ctrl+l` re-sends the real keystroke.
+- `alt+hjkl` needs Ghostty configured to send Option as Meta, otherwise the resize keys type
+  `˙∆˚¬`. Navigation is unaffected.
+
+### herdr-file-viewer
+
+A git-aware read-only file browser, opened with `prefix+f` in a split or `prefix+shift+f` in
+its own tab.
