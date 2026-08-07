@@ -5,6 +5,7 @@ zsh/.zsh/zsh-syntax-highlighting/
 .DS_Store
 bin/bin/datatui
 bin/bin/fragua
+bin/bin/hey
 
 # herdr runtime files
 herdr/.config/herdr/*.log
