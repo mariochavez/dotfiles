@@ -96,7 +96,12 @@ command = "herdr-splits.resize-right"
 # ctrl+l no longer reaches the shell as clear-screen (herdr-splits claims it in
 # non-nvim panes), so re-send the real keystroke to the focused pane behind the
 # prefix.
+#
+# Resolves herdr through $HERDR_BIN_PATH and parses the pane id with /usr/bin
+# tools rather than calling `herdr` and `jq` by bare name: the server runs these
+# commands with its own PATH, which need not carry ~/.local/bin or Homebrew.
+# The plugin scripts use the same $HERDR_BIN_PATH fallback for this reason.
 [[keys.command]]
 key = "prefix+ctrl+l"
 type = "shell"
-command = "herdr pane send-keys \"$(herdr pane current | jq -r .result.pane.pane_id)\" ctrl+l"
+command = '''h="${HERDR_BIN_PATH:-$HOME/.local/bin/herdr}"; "$h" pane send-keys "$("$h" pane current | grep -o '"pane_id":"[^"]*"' | head -1 | cut -d'"' -f4)" ctrl+l'''
