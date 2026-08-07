@@ -39,6 +39,51 @@
             "text"
           ],
           "reasoning": true
+        },
+        {
+          "_launch": true,
+          "contextWindow": 1000000,
+          "id": "gemma4:cloud",
+          "input": [
+            "text",
+            "image"
+          ],
+          "reasoning": true
+        },
+        {
+          "_launch": true,
+          "id": "qwen3.5:35b-a3b-coding-nvfp4",
+          "input": [
+            "text",
+            "image"
+          ],
+          "reasoning": true
+        },
+        {
+          "_launch": true,
+          "id": "deepseek-v4-pro:cloud",
+          "input": [
+            "text"
+          ],
+          "reasoning": true
+        },
+        {
+          "_launch": true,
+          "id": "deepseek-v4-flash:0731-cloud",
+          "input": [
+            "text"
+          ],
+          "reasoning": true
+        },
+        {
+          "_launch": true,
+          "contextWindow": 262144,
+          "id": "kimi-k3:cloud",
+          "input": [
+            "text",
+            "image"
+          ],
+          "reasoning": true
         }
       ]
     },
@@ -65,6 +110,39 @@
           "maxTokens": 32768,
           "name": "Qwen3.5-9B-MLX-4bit",
           "reasoning": false
+        },
+        {
+          "contextWindow": 262144,
+          "cost": {
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "input": 0,
+            "output": 0
+          },
+          "id": "Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
+          "input": [
+            "text"
+          ],
+          "maxTokens": 32768,
+          "name": "Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
+          "reasoning": false
+        },
+        {
+          "contextWindow": 262144,
+          "cost": {
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "input": 0,
+            "output": 0
+          },
+          "id": "Ornith-1.0-35B-5bit-mlx",
+          "input": [
+            "text",
+            "image"
+          ],
+          "maxTokens": 32768,
+          "name": "Ornith 35b",
+          "reasoning": true
         }
       ]
     }
