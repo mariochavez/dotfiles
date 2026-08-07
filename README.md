@@ -41,6 +41,12 @@ brew tap homebrew/cask-fonts
 brew install git lazygit ghostty starship fzf fd eza bat zoxide font-meslo-lg-nerd-font neovim tmux zsh-autosuggestions zsh-syntax-highlighting stow
 ```
 
+herdr is not installed through Homebrew, use its own installer.
+
+```bash
+curl -fsSL https://herdr.dev/install.sh | sh
+```
+
 After tools installation, clone this repository to `.dotfiles` in your home directory.
 
 ```bash
