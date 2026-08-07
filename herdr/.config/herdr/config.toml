@@ -22,13 +22,13 @@ prefix = "ctrl+a"
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
 
-# tmux: bind h/j/k/l select-pane (vim-tmux-navigator style — no prefix).
+# Pane navigation lives in the herdr-splits keys.command bindings below, not in
+# the built-in `focus_pane_*` keys: those fire unconditionally and swallow
+# ctrl+hjkl before nvim ever sees them (tmux solved this with the
+# vim-tmux-navigator `if-shell "$is_vim" send-keys` snippet, which has no
+# built-in equivalent here).
 # Note: ctrl+h collides with Backspace in most terminals; if backspace stops
 # working in panes, drop `ctrl+h` and use `prefix+h` for left navigation.
-focus_pane_left = "ctrl+h"
-focus_pane_down = "ctrl+j"
-focus_pane_up = "ctrl+k"
-focus_pane_right = "ctrl+l"
 
 # Pane resizing (tmux used arrow keys with -r repeat).
 # Herdr uses a dedicated resize mode entered via a single keybinding.
@@ -47,3 +47,56 @@ command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewe
 key = "prefix+shift+f"
 type = "shell"
 command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-viewer"
+
+# Seamless nvim-split / herdr-pane navigation and resizing.
+# https://github.com/lmilojevicc/herdr-splits.nvim
+# Each action checks the focused pane's foreground process: if it's nvim the
+# chord is forwarded into the editor, otherwise herdr moves focus itself.
+# The nvim half is ~/.config/nvim/lua/plugins/navigator.lua.
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "herdr-splits.nav-left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "herdr-splits.nav-down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "herdr-splits.nav-up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "herdr-splits.nav-right"
+
+[[keys.command]]
+key = "alt+h"
+type = "plugin_action"
+command = "herdr-splits.resize-left"
+
+[[keys.command]]
+key = "alt+j"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+
+[[keys.command]]
+key = "alt+k"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+
+[[keys.command]]
+key = "alt+l"
+type = "plugin_action"
+command = "herdr-splits.resize-right"
+
+# ctrl+l no longer reaches the shell as clear-screen (herdr-splits claims it in
+# non-nvim panes), so re-send the real keystroke to the focused pane behind the
+# prefix.
+[[keys.command]]
+key = "prefix+ctrl+l"
+type = "shell"
+command = "herdr pane send-keys \"$(herdr pane current | jq -r .result.pane.pane_id)\" ctrl+l"
