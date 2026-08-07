@@ -8,4 +8,6 @@ compile = false
 "github:can1357/oh-my-pi" = "latest"
 node = "lts"
 pipx = "latest"
+pnpm = "11.14.0"
+python = "3.14"
 ruby = "4.0.0"
