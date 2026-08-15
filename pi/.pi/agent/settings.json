@@ -1,8 +1,8 @@
 {
-  "defaultModel": "deepseek-v4-flash:0731-cloud",
+  "defaultModel": "deepseek-v4-pro:cloud",
   "defaultProvider": "ollama",
   "defaultThinkingLevel": "medium",
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.2",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
@@ -13,35 +13,34 @@
     "npm:pi-prompt-template-model",
     "npm:@juanibiapina/pi-extension-settings",
     "npm:@juanibiapina/pi-powerbar",
-    "npm:@sherif-fanous/pi-catppuccin",
     "git:github.com/kreeger/pi-statusbar",
     "https://github.com/davebcn87/pi-autoresearch"
   ],
   "subagents": {
     "agentOverrides": {
       "context-builder": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       },
       "delegate": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       },
       "oracle": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       },
       "planner": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       },
       "researcher": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       },
       "reviewer": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       },
       "scout": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       },
       "worker": {
-        "model": "Qwen3.6-35B-A3B-UD-MLX-4bit"
+        "model": "glm-5.2:cloud"
       }
     }
   },

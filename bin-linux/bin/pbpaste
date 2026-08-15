@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# pbpaste — write the clipboard to stdout. Linux only; macOS ships its own.
+# Counterpart to the pbcopy shim beside this file.
+#
+# There is deliberately no OSC 52 fallback: the escape sequence can request a
+# read, but most terminals refuse it for security and osc52.sh only implements
+# the write half. Over SSH, paste therefore reads *this* machine's clipboard —
+# it is copy, not paste, that needs to reach the machine you are typing at.
+set -euo pipefail
+
+if [ -n "${WAYLAND_DISPLAY:-}" ] && command -v wl-paste >/dev/null 2>&1; then
+  exec wl-paste --no-newline "$@"
+fi
+
+if [ -n "${DISPLAY:-}" ] && command -v xclip >/dev/null 2>&1; then
+  exec xclip -selection clipboard -o "$@"
+fi
+
+echo "pbpaste: no clipboard backend found (tried wl-paste, xclip)" >&2
+exit 1

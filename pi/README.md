@@ -46,24 +46,35 @@ here because they are installed from npm/Git and are regenerable.
 Install them with:
 
 ```bash
-pi extensions install npm:pi-web-access
-pi extensions install npm:pi-subagents
-pi extensions install npm:pi-mcp-adapter
-pi extensions install npm:pi-intercom
-pi extensions install npm:@spences10/pi-lsp
-pi extensions install npm:pi-ollama-cloud
-pi extensions install git:github.com/kreeger/pi-statusbar
+pi install npm:pi-web-access
+pi install npm:pi-mcp-adapter
+pi install npm:pi-subagents
+pi install npm:pi-intercom
+pi install npm:@spences10/pi-lsp
+pi install npm:pi-ollama-cloud
+pi install npm:pi-prompt-template-model
+pi install npm:@juanibiapina/pi-extension-settings
+pi install npm:@juanibiapina/pi-powerbar
+pi install git:github.com/kreeger/pi-statusbar
+pi install https://github.com/davebcn87/pi-autoresearch
 ```
 
 | Package | Provides |
 | --- | --- |
 | `npm:pi-web-access` | web search/fetch tools and the `librarian` skill |
-| `npm:pi-subagents` | subagent delegation and the `pi-subagents` skill |
 | `npm:pi-mcp-adapter` | MCP gateway integration |
+| `npm:pi-subagents` | subagent delegation and the `pi-subagents` skill |
 | `npm:pi-intercom` | cross-session intercom and the `pi-intercom` skill |
 | `npm:@spences10/pi-lsp` | language-server diagnostics/hover/definitions tools |
 | `npm:pi-ollama-cloud` | Ollama Cloud provider (web search/fetch) |
+| `npm:pi-prompt-template-model` | per-model prompt templates |
+| `npm:@juanibiapina/pi-extension-settings` | settings UI for installed extensions |
+| `npm:@juanibiapina/pi-powerbar` | powerbar widgets |
 | `git:github.com/kreeger/pi-statusbar` | the `pi-statusbar` extension (status bar widgets) |
+| `https://github.com/davebcn87/pi-autoresearch` | autoresearch extension, installed from a Git URL |
+
+This list must stay in sync with the `packages` array in `agent/settings.json` —
+that array is what pi reads, the list above is only the install transcript.
 
 Custom extensions tracked in this repo (`answer.ts`, `git-status-widget.ts`,
 `whimsical.ts`) are symlinked in directly and need no install step.

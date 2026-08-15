@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# pbcopy — read stdin and put it on the clipboard. Linux only; macOS ships its
+# own, which is why this lives in the `bin-linux` stow package and not `bin`.
+#
+# Supplies the name the helpers in bin/ (cpy, cpygitc, cpygits, ...) already
+# call, so they work unchanged on both machines. A shell alias can't do this
+# job: scripts don't inherit aliases.
+#
+# Dispatch order:
+#   1. OSC 52    — when this shell is on the far end of an SSH connection, the
+#                  clipboard you want is the one on the machine you are typing
+#                  at. The escape travels back through ssh/tmux to that
+#                  terminal. Checked FIRST so a stray WAYLAND_DISPLAY or an
+#                  X11-forwarded DISPLAY can't silently copy to the wrong host.
+#   2. wl-copy   — Wayland (Omarchy / Hyprland)
+#   3. xclip     — X11
+#   4. OSC 52    — no display at all (bare tty, container, herdr pane)
+set -euo pipefail
+
+osc52="$(dirname "$0")/osc52.sh"
+
+if [ -n "${SSH_CONNECTION:-}${SSH_TTY:-}" ] && [ -x "$osc52" ]; then
+  exec "$osc52" "$@"
+fi
+
+if [ -n "${WAYLAND_DISPLAY:-}" ] && command -v wl-copy >/dev/null 2>&1; then
+  exec wl-copy "$@"
+fi
+
+if [ -n "${DISPLAY:-}" ] && command -v xclip >/dev/null 2>&1; then
+  exec xclip -selection clipboard "$@"
+fi
+
+if [ -x "$osc52" ]; then
+  exec "$osc52" "$@"
+fi
+
+echo "pbcopy: no clipboard backend found (tried wl-copy, xclip, osc52.sh)" >&2
+exit 1

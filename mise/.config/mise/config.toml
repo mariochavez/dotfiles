@@ -1,12 +1,17 @@
 [settings]
 idiomatic_version_file_enable_tools = ["ruby"]
 
+# Building Ruby from source takes minutes and needs a full toolchain; use the
+# prebuilt binaries on both macOS and Arch.
 [settings.ruby]
 compile = false
 
 [tools]
-"github:can1357/oh-my-pi" = "latest"
+claude = "latest"
+codex = "latest"
+gh = "latest"
 node = "lts"
+pi = "latest"
 pipx = "latest"
 pnpm = "11.14.0"
 python = "3.14"

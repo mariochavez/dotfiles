@@ -11,6 +11,14 @@ bin/bin/hey
 herdr/.config/herdr/*.log
 herdr/.config/herdr/release-notes.json
 herdr/.config/herdr/session.json
+herdr/.config/herdr/.plugins.lock
+herdr/.config/herdr/*.sock
+# Installed plugins, their generated config, and the install manifest herdr
+# writes alongside them. plugins.json is a cache, not a declaration: it holds
+# absolute paths, resolved commit SHAs and install timestamps, so it cannot be
+# shared between machines. Reinstall with `herdr plugin install` (see README).
+herdr/.config/herdr/plugins/
+herdr/.config/herdr/plugins.json
 
 # editor/app backups
 *.bak

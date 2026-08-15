@@ -1,12 +1,72 @@
+# Ghostty — shared between macOS and Omarchy (Arch + Hyprland).
+#
+# Ghostty's Linux build still recognises every `macos-*` key and
+# `window-colorspace`; they are inert no-ops off macOS rather than errors, so
+# one file covers both machines. The only genuinely per-machine piece is the
+# colour scheme, handled by the optional include below.
+
+########## THEME ##########
+
+# Baseline, and what macOS uses.
 theme = catppuccin-mocha
-font-family = "MesloLGS Nerd Font Mono"
-font-size = 14
+
+# On Omarchy, `omarchy theme set <name>` rewrites this file and the terminal
+# follows along. The leading `?` makes the include optional, so it is silently
+# skipped on macOS where the path does not exist. It must stay *after* `theme`
+# above: for single-value keys the last assignment wins, and this file sets
+# background/foreground/palette explicitly.
+config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
+
 background-opacity = 0.95
+
+########## FONT ##########
+
+# Repeated `font-family` builds a fallback chain. Meslo is the preference; on a
+# machine that only has Omarchy's stock font, JetBrains keeps the Nerd Font
+# glyphs that starship and eza rely on instead of dropping to a fallback with
+# no icons. Install the real thing with `omarchy pkg add ttf-meslo-nerd`.
+font-family = "MesloLGS Nerd Font Mono"
+font-family = "JetBrainsMono Nerd Font"
+font-size = 14
+
+########## WINDOW ##########
+
 gtk-titlebar = false
-mouse-hide-while-typing = true
-mouse-scroll-multiplier = 2
-macos-titlebar-style = hidden
+gtk-toolbar-style = flat
 window-padding-balance = true
 window-colorspace = "display-p3"
+resize-overlay = never
+confirm-close-surface = false
+
+macos-titlebar-style = hidden
 macos-option-as-alt = false
+
+########## INPUT ##########
+
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2
 clipboard-read = allow
+
+# Cursor styling + SSH session terminfo.
+# (all shell integration options must be passed together)
+shell-integration-features = no-cursor,ssh-env
+
+########## KEYBINDINGS ##########
+
+# Linux-desktop clipboard conventions. Harmless on macOS, which uses Cmd+C/V.
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+
+# Send Shift+Enter as CSI-u so TUIs can distinguish it from Enter.
+keybind = shift+enter=csi:13;2u
+# Legacy encoding sends Alt+Shift+Enter the same as Alt+Enter; send CSI-u so
+# tmux can match M-S-Enter.
+keybind = alt+shift+enter=csi:13;4u
+
+########## LINUX / HYPRLAND ##########
+
+# Works around general slowness under Hyprland.
+# https://github.com/ghostty-org/ghostty/discussions/3224
+# Safe to set unconditionally: Ghostty falls back to an available backend when
+# the requested one isn't on the platform, and macOS always uses kqueue.
+async-backend = epoll
