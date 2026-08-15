@@ -35,8 +35,8 @@ Shell, Terminal, are tools were setup for my best experience working with code, 
 
 These configs run on **macOS** and on **[Omarchy](https://omarchy.org/)** (Arch Linux +
 Hyprland) from the same files. Nothing is forked per OS: the shell branches on three
-flags set at the top of `.zshrc` (`IS_MACOS`, `IS_LINUX`, `IS_OMARCHY`), and the terminal
-configs rely on their own optional-include mechanisms so one file covers both machines.
+flags set at the top of `.zshrc` (`IS_MACOS`, `IS_LINUX`, `IS_OMARCHY`), and the ghostty
+config uses an optional include so one file covers both machines.
 
 ## Installation
 
@@ -53,7 +53,7 @@ Useful flags: `--dry-run` (show what would happen), `--stow-only`, `--packages`.
 
 Any real file already sitting where a symlink needs to go is moved to
 `~/.dotfiles-backup/<timestamp>/` first — on Omarchy that is how the distro's own
-`ghostty`, `kitty`, and `mise` configs get out of the way. The installer never uses
+`ghostty` and `mise` configs get out of the way. The installer never uses
 `stow --adopt`, which would pull the machine's current config into the repo.
 
 Close your terminal, open Ghostty, and you should be ready.
@@ -80,7 +80,7 @@ curl -fsSL https://herdr.dev/install.sh | sh
 Then stow the packages:
 
 ```bash
-stow bat bin ghostty herdr kitty mise nvim pi starship tmux yazi zsh
+stow bat bin ghostty herdr mise nvim pi starship tmux yazi zsh
 
 # Linux only — pbcopy/pbpaste shims. macOS provides those natively, so stowing
 # this package there would shadow the real binaries.
@@ -184,14 +184,14 @@ everywhere.
 A few things worth knowing when these dotfiles are stowed on an Omarchy box.
 
 **Themes still work.** `omarchy theme set <name>` writes to
-`~/.local/state/omarchy/current/theme/`, and the ghostty and kitty configs pull that in
-through an optional include placed after the Catppuccin baseline, so the live theme wins
-on Omarchy and macOS falls back to Catppuccin Mocha. The same include is silently skipped
-on macOS, where the path does not exist.
+`~/.local/state/omarchy/current/theme/`, and the ghostty config pulls that in through an
+optional include placed after the Catppuccin baseline, so the live theme wins on Omarchy
+and macOS falls back to Catppuccin Mocha. The include is silently skipped on macOS, where
+the path does not exist.
 
 **`omarchy update` can edit tracked files.** Omarchy migrations `sed -i` and append to
-files under `~/.config` — `tmux.conf` and `kitty.conf` have both been touched this way.
-Because those paths are stow symlinks into this repo, the edits land *in the repo*. That
+files under `~/.config` — `tmux.conf` has been touched this way. Because those paths are
+stow symlinks into this repo, the edits land *in the repo*. That
 is mostly a feature, since the changes get versioned, but run `git status` here after an
 `omarchy update` and review what changed.
 

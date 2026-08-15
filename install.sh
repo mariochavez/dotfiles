@@ -14,7 +14,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 REPO="$PWD"
 
-STOW_PACKAGES=(bat bin ghostty herdr kitty mise nvim pi starship tmux yazi zsh)
+STOW_PACKAGES=(bat bin ghostty herdr mise nvim pi starship tmux yazi zsh)
 
 DO_PACKAGES=1
 DO_STOW=1
