@@ -54,7 +54,6 @@ pi install npm:@spences10/pi-lsp
 pi install npm:pi-ollama-cloud
 pi install npm:pi-prompt-template-model
 pi install npm:@juanibiapina/pi-extension-settings
-pi install npm:@juanibiapina/pi-powerbar
 pi install git:github.com/kreeger/pi-statusbar
 pi install https://github.com/davebcn87/pi-autoresearch
 ```
@@ -69,7 +68,6 @@ pi install https://github.com/davebcn87/pi-autoresearch
 | `npm:pi-ollama-cloud` | Ollama Cloud provider (web search/fetch) |
 | `npm:pi-prompt-template-model` | per-model prompt templates |
 | `npm:@juanibiapina/pi-extension-settings` | settings UI for installed extensions |
-| `npm:@juanibiapina/pi-powerbar` | powerbar widgets |
 | `git:github.com/kreeger/pi-statusbar` | the `pi-statusbar` extension (status bar widgets) |
 | `https://github.com/davebcn87/pi-autoresearch` | autoresearch extension, installed from a Git URL |
 

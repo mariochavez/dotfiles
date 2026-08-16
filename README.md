@@ -183,13 +183,12 @@ pi install npm:@spences10/pi-lsp
 pi install npm:pi-ollama-cloud
 pi install npm:pi-prompt-template-model
 pi install npm:@juanibiapina/pi-extension-settings
-pi install npm:@juanibiapina/pi-powerbar
 pi install git:github.com/kreeger/pi-statusbar
 pi install https://github.com/davebcn87/pi-autoresearch
 ```
 
 This is the complete set — anything else installed under `~/.pi/agent/` should be
-removed. The same eleven are listed in the `packages` array of
+removed. The same ten are listed in the `packages` array of
 `pi/.pi/agent/settings.json`, which is what pi actually reads; keep the two in sync.
 
 [`pi/README.md`](pi/README.md) has the rest: what each package provides, which files are
