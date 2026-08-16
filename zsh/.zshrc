@@ -90,8 +90,6 @@ alias tmk="tmux kill-session -t $1"
 alias tmcp="tmux new-session -s mcp"
 
 # Other aliases
-alias toggle-claude='~/bin/toggle_claude'
-
 alias lzd='lazydocker'
 alias clean-dir='find . -name "*.orig" -print0 -delete; find . -name "*.un~" -print0 -delete; find . -name "*.orig" -print0 -delete; find . -name "*.DS_Store"; find . -name "*.swp" -print0 -delete; find . -name "*.log" -print0 -delete'
 

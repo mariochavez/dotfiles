@@ -1,0 +1,63 @@
+{
+  "includeCoAuthoredBy": false,
+  "model": "opus[1m]",
+  "effortLevel": "high",
+  "theme": "dark-ansi",
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "env": {
+    "RECUERD0_HOOK_DISABLE": "1"
+  },
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "voiceEnabled": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "skillOverrides": {
+    "ai-seo": "off",
+    "analytics-tracking": "off",
+    "page-cro": "off",
+    "programmatic-seo": "off",
+    "site-architecture": "off"
+  },
+  "enabledPlugins": {
+    "better-stimulus@maquina": true,
+    "claude-md-management@claude-plugins-official": false,
+    "code-simplifier@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "document-skills@anthropic-agent-skills": true,
+    "frontend-design@claude-plugins-official": true,
+    "maquina-ui-standards@maquina": true,
+    "mvp-creator@maquina": false,
+    "rails-security-auditor@maquina": true,
+    "rails-simplifier@maquina": true,
+    "rails-upgrade-assistant@maquina": false,
+    "recuerd0@maquina": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "spec-driven-development@maquina": false,
+    "swift-lsp@claude-plugins-official": false,
+    "rails-hotwire-driver@maquina": true,
+    "hotwire-patterns@maquina": true
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$HOME/.claude/statusline-command.sh\""
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

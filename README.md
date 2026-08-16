@@ -16,6 +16,7 @@ These dotfiles are my base configuration for the following tools.
 - [Git](https://git-scm.com)
 - [Lazygit](https://github.com/jesseduffield/lazygit)
 - [Tmux](https://github.com/tmux/tmux)
+- [Claude Code](https://claude.com/claude-code)
 - [herdr](https://herdr.dev/)
 - [mise](https://mise.jdx.dev/)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
@@ -82,9 +83,19 @@ Then stow the packages:
 ```bash
 stow bat bin ghostty herdr mise nvim pi starship tmux yazi zsh
 
+# claude-code needs --no-folding; see the Claude Code section below.
+stow --no-folding claude-code
+
 # Linux only — pbcopy/pbpaste shims. macOS provides those natively, so stowing
 # this package there would shadow the real binaries.
 stow bin-linux
+```
+
+Claude Code's `settings.json` is applied rather than stowed, so it needs one
+more step:
+
+```bash
+./claude-code/apply-settings.sh
 ```
 
 On Omarchy, make zsh your login shell if it isn't already — Omarchy defaults to bash:
@@ -99,6 +110,63 @@ chsh -s "$(command -v zsh)"
 be set up once per machine: the [pi plugins](#pi-plugins), [Ollama](#ollama) (pi's
 default provider, and a daemon that must be running), the
 [herdr plugins](#herdr-plugins), and the tmux plugins (`prefix + I` on first run).
+
+## Claude Code
+
+Split in two, because the two files behave very differently.
+
+| File | Tracked as | Why |
+| --- | --- | --- |
+| `~/.claude/statusline-command.sh` | stowed symlink | a plain script; nothing but me ever writes it |
+| `~/.claude/settings.json` | applied by script | Claude Code rewrites it constantly |
+
+`theme = dark-ansi` means Claude Code paints its UI from the terminal's own 16
+ANSI colours instead of a fixed palette, so it inherits whatever Ghostty is set
+to — `catppuccin-mocha` here, and whatever `omarchy theme set` picks on
+Omarchy. The status line is the one part that does *not* follow: it writes
+24-bit colour escapes with Catppuccin Mocha hex baked in. It also needs `jq`.
+
+### settings.json is applied, not symlinked
+
+```bash
+./claude-code/apply-settings.sh            # merge repo keys into ~/.claude/settings.json
+./claude-code/apply-settings.sh --dry-run  # show what would change
+```
+
+`install.sh` runs this after stowing. `claude-code/settings.json` holds the
+keys this repo asserts; each is replaced wholesale in the target file, and any
+key not listed is left alone.
+
+Symlinking that file was the obvious move and it is the wrong one. Claude Code
+edits it as you work — switching model, toggling a plugin, running
+`/auto-mode-setup` — so a symlink means the repo goes dirty constantly with
+changes you never made by hand. Worse, an app that writes by replacing the file
+rather than rewriting it turns the symlink back into a regular file and the
+repo silently stops tracking anything. Claude Desktop did precisely that to its
+own config on this machine. Applying keys over a local file sidesteps both.
+
+The `autoMode` block is the reason this matters in practice: `/auto-mode-setup`
+generates it from the machine it ran on, absolute home directory and all. It
+stays local and out of git.
+
+Command paths in the tracked settings use `$HOME` rather than an absolute path,
+so they resolve on both machines — Claude Code runs those fields through a
+shell, so the variable expands.
+
+### Always stow this package with `--no-folding`
+
+`~/.claude/` is a runtime directory — session history, caches, and `projects/`
+all live there. Without `--no-folding`, stow run on a machine where `~/.claude`
+does not exist yet links the whole directory into this repo, and Claude Code
+then writes all of that state into these dotfiles. `install.sh` passes the flag
+automatically.
+
+### What is deliberately not tracked
+
+`~/.claude.json` holds the OAuth account and per-project state, and
+`~/.claude/CLAUDE.md`, `keybindings.json`, `hooks/`, and `skills/` are left
+alone for now. Claude *Desktop* is not tracked here at all: it rewrites its own
+`claude_desktop_config.json` in place, so there is nothing stable to stow.
 
 ## pi plugins
 

@@ -14,7 +14,14 @@ set -euo pipefail
 cd "$(dirname "$0")"
 REPO="$PWD"
 
-STOW_PACKAGES=(bat bin ghostty herdr mise nvim pi starship tmux yazi zsh)
+STOW_PACKAGES=(bat bin claude-code ghostty herdr mise nvim pi starship tmux yazi zsh)
+
+# Packages whose target directory is also a runtime state directory, so stow
+# must link the individual files and never fold the parent. Without this, a
+# machine where ~/.claude does not exist yet gets ~/.claude symlinked straight
+# at the repo, and Claude Code then writes history.jsonl, sessions/, and
+# projects/ into these dotfiles.
+NO_FOLDING=(claude-code)
 
 DO_PACKAGES=1
 DO_STOW=1
@@ -63,7 +70,7 @@ install_macos_packages() {
   fi
 
   run brew install \
-    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi \
+    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi jq \
     zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font
 }
 
@@ -72,7 +79,7 @@ install_arch_packages() {
   # that a stock Omarchy install is missing are the two zsh plugins and the
   # Meslo Nerd Font this config asks for.
   local packages=(
-    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi stow
+    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi stow jq
     zsh zsh-autosuggestions zsh-syntax-highlighting ttf-meslo-nerd wl-clipboard
   )
 
@@ -149,8 +156,28 @@ if [ "$DO_STOW" -eq 1 ]; then
   for pkg in "${STOW_PACKAGES[@]}"; do
     [ -d "$REPO/$pkg" ] || { warn "  skipping $pkg (no such directory)"; continue; }
     backup_conflicts "$pkg"
-    run stow --target="$HOME" "$pkg"
+
+    # `${a[@]+...}` keeps `set -u` from tripping on an empty array under the
+    # bash 3.2 that macOS still ships.
+    stow_flags=()
+    for nf in "${NO_FOLDING[@]}"; do
+      if [ "$nf" = "$pkg" ]; then stow_flags+=(--no-folding); fi
+    done
+
+    run stow --target="$HOME" ${stow_flags[@]+"${stow_flags[@]}"} "$pkg"
   done
+
+  # Claude Code's settings.json is not stowed: the app rewrites it in place, so
+  # a symlink would dirty this repo on every edit and could be clobbered
+  # outright. The repo asserts its keys over the local file instead.
+  if [ -x "$REPO/claude-code/apply-settings.sh" ]; then
+    say "Applying Claude Code settings"
+    if [ "$DRY_RUN" -eq 1 ]; then
+      "$REPO/claude-code/apply-settings.sh" --dry-run | sed 's/^/  /'
+    else
+      "$REPO/claude-code/apply-settings.sh" | sed 's/^/  /'
+    fi
+  fi
 
   say "Done. Restart your shell."
 

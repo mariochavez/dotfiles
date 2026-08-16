@@ -1,0 +1,8 @@
+# Not stowed: applied by ./apply-settings.sh instead. See README.
+# NOTE: a local ignore list REPLACES stow's defaults, so the usual
+# README/LICENSE entries are repeated here.
+^/settings\.json$
+^/apply-settings\.sh$
+^/README.*
+^/LICENSE.*
+\.DS_Store
