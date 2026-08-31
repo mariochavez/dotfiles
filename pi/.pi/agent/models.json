@@ -43,6 +43,26 @@
         {
           "_launch": true,
           "contextWindow": 1000000,
+          "id": "glm-5.3:cloud",
+          "input": [
+            "text"
+          ],
+          "reasoning": true
+        },
+        {
+          "_launch": true,
+          "contextWindow": 1000000,
+          "id": "glm-5.3-flash:cloud",
+          "input": [
+            "text",
+            "image"
+          ],
+          "maxTokens": 131072,
+          "reasoning": true
+        },
+        {
+          "_launch": true,
+          "contextWindow": 1000000,
           "id": "gemma4:cloud",
           "input": [
             "text",
