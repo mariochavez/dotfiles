@@ -1,6 +1,6 @@
 ---
 name: write-a-skill
-description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
+description: Create, update, or audit agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, build, update, or improve a skill.
 disable-model-invocation: true
 ---
 
@@ -16,7 +16,7 @@ disable-model-invocation: true
 
 2. **Draft the skill** - create:
    - SKILL.md with concise instructions
-   - Additional reference files if content exceeds 500 lines
+   - Additional reference files if SKILL.md exceeds 100 lines
    - Utility scripts if deterministic operations needed
 
 3. **Review with user** - present draft and ask:
@@ -35,58 +35,38 @@ skill-name/
     └── helper.js
 ```
 
-## SKILL.md Template
+## SKILL.md Template & Description Format
 
-```md
----
-name: skill-name
-description: Brief description of capability. Use when [specific triggers].
----
+The description is the only thing your agent sees when deciding which skill to load. Strong descriptions state what the skill does, then "Use when [specific triggers]". For the full SKILL.md template and description examples, see [REFERENCE.md](REFERENCE.md).
 
-# Skill Name
+## Deciding How the Skill Triggers
 
-## Quick start
+Pick the invocation model deliberately:
 
-[Minimal working example]
+- **Model-invoked** (default): the description sits in the agent's context forever. The model decides when to load SKILL.md. Cost: higher context load on every request, more unpredictability.
+- **User-invoked** (`disable-model-invocation: true`): invisible to the agent until the developer triggers it. Keeps context lightweight and behavior predictable; cost: user must remember it exists.
+- **Router skill**: if you build many user-invoked skills, add one router skill whose only job is listing the others and when to reach for them.
 
-## Workflows
+## Structuring Content
 
-[Step-by-step processes with checklists for complex tasks]
+- **Keep SKILL.md small.** Smaller skills are easier to audit and save tokens.
+- **Progressive disclosure:** SKILL.md is a ladder. Push heavy reference material into linked files; the agent fetches them only when a branch requires it.
+- **Co-location:** keep a concept's definition, rules, and caveats under a single heading.
+- **Split when:** SKILL.md exceeds 100 lines, content spans distinct domains (finance vs sales schemas), or features are rarely needed.
 
-## Advanced features
+## Steering Agent Behavior
 
-[Link to separate files: See [REFERENCE.md](REFERENCE.md)]
-```
+- **Use leading words:** pack meaning into short, universally understood phrases (e.g. "Vertical Slice" instead of "Don't code layer by layer"). The agent repeats them in its reasoning, aligning behavior.
+- **Avoid negation:** don't steer by prohibition. State the exact target behavior instead — banned behaviors become more prominent when named.
+- **Increase leg work:** if agents skip early steps (e.g. "ask clarifying questions") to rush to the goal, split phases into separate skills so the agent only sees one step at a time.
 
-## Description Requirements
+## Pruning
 
-The description is **the only thing your agent sees** when deciding which skill to load. It's surfaced in the system prompt alongside all other installed skills. Your agent reads these descriptions and picks the relevant skill based on the user's request.
+Massive skills signal poor design. Prune aggressively:
 
-**Goal**: Give your agent just enough info to know:
-
-1. What capability this skill provides
-2. When/why to trigger it (specific keywords, contexts, file types)
-
-**Format**:
-
-- Max 1024 chars
-- Write in third person
-- First sentence: what it does
-- Second sentence: "Use when [specific triggers]"
-
-**Good example**:
-
-```
-Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when user mentions PDFs, forms, or document extraction.
-```
-
-**Bad example**:
-
-```
-Helps with documents.
-```
-
-The bad example gives your agent no way to distinguish this from other document skills.
+- **DRY:** every instruction has a single source of truth.
+- **Remove sediment:** shared skills accumulate edge-case additions from many contributors; regularly restructure or delete stale parts.
+- **Eliminate no-ops:** if removing a paragraph doesn't change the agent's output, delete it permanently.
 
 ## When to Add Scripts
 
@@ -98,20 +78,23 @@ Add utility scripts when:
 
 Scripts save tokens and improve reliability vs generated code.
 
-## When to Split Files
+## Exposing via MCP
 
-Split into separate files when:
+Skills map naturally onto MCP:
 
-- SKILL.md exceeds 100 lines
-- Content has distinct domains (finance vs sales schemas)
-- Advanced features are rarely needed
+- **Model-invoked skills → MCP tools:** the skill description becomes the tool description; the tool fetches the underlying SKILL.md.
+- **User-invoked reference material → MCP resources:** heavy guidelines/templates are injected into context manually, only when needed.
 
 ## Review Checklist
 
 After drafting, verify:
 
 - [ ] Description includes triggers ("Use when...")
-- [ ] SKILL.md under 100 lines
+- [ ] Invocation model chosen deliberately (model vs user-invoked; router if needed)
+- [ ] SKILL.md under 100 lines; heavy material pushed to linked files
+- [ ] Each concept's definition, rules, caveats co-located under one heading
+- [ ] Steering uses leading words and positive instructions (no negation)
+- [ ] No duplicated guidance, stale sediment, or no-op paragraphs
 - [ ] No time-sensitive info
 - [ ] Consistent terminology
 - [ ] Concrete examples included
