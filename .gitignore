@@ -20,5 +20,13 @@ herdr/.config/herdr/*.sock
 herdr/.config/herdr/plugins/
 herdr/.config/herdr/plugins.json
 
+# pi runtime files
+# Subagent transcripts and artifacts, written into whatever directory pi runs in.
+.pi-subagents/
+# The herdr skill is a full clone of the herdr source repo and the impeccable
+# skill vendors its own tooling; both are installed per-machine, not shared.
+pi/.pi/agent/skills/herdr/
+pi/.pi/agent/skills/impeccable/
+
 # editor/app backups
 *.bak
