@@ -7,7 +7,6 @@ idiomatic_version_file_enable_tools = ["ruby"]
 compile = false
 
 [tools]
-claude = "latest"
 codex = "latest"
 gh = "latest"
 node = "lts"
