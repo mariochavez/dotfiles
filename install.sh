@@ -161,6 +161,7 @@ backup_conflicts() {
 # Entries are id:owner/repo, where id is what `herdr plugin list` reports.
 HERDR_PLUGINS=(
   herdr-splits:lmilojevicc/herdr-splits.nvim
+  herdr-file-viewer:smarzban/herdr-file-viewer
 )
 
 install_herdr_plugins() {
