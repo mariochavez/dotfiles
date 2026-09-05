@@ -150,6 +150,57 @@ backup_conflicts() {
   return 0
 }
 
+########## HERDR PLUGINS ##########
+
+# Plugin binaries and the install manifest live outside git (see .gitignore),
+# so a freshly stowed config.toml arrives carrying keybindings whose plugin
+# actions do not exist yet -- ctrl+hjkl then fails with "plugin action not
+# found" in every non-Neovim pane. Install them after stow, so they land under
+# the now-symlinked ~/.config/herdr.
+#
+# Entries are id:owner/repo, where id is what `herdr plugin list` reports.
+HERDR_PLUGINS=(
+  herdr-splits:lmilojevicc/herdr-splits.nvim
+)
+
+install_herdr_plugins() {
+  local listed entry id repo changed=0
+
+  if ! command -v herdr >/dev/null 2>&1; then
+    warn "  herdr not installed — skipping its plugins"
+    return 0
+  fi
+
+  listed="$(herdr plugin list 2>/dev/null || true)"
+
+  for entry in "${HERDR_PLUGINS[@]}"; do
+    id="${entry%%:*}"
+    repo="${entry#*:}"
+
+    if printf '%s\n' "$listed" | grep -qF -- "- $id "; then
+      continue
+    fi
+
+    say "  installing herdr plugin $id"
+    # --yes must follow the positional argument: herdr's parser rejects the
+    # flag when it comes first. It is required because this is a remote
+    # install and stdin is not a terminal under `./install.sh`.
+    run herdr plugin install "$repo" --yes
+    changed=1
+  done
+
+  [ "$changed" -eq 1 ] || return 0
+
+  # Keybindings in config.toml only resolve to the new actions after a reload.
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "  would run: herdr server reload-config"
+  elif ! herdr server reload-config >/dev/null 2>&1; then
+    warn "  herdr server reload-config failed — restart herdr to pick up the plugins"
+  fi
+
+  return 0
+}
+
 if [ "$DO_STOW" -eq 1 ]; then
   say "Stowing: ${STOW_PACKAGES[*]}"
 
@@ -178,6 +229,9 @@ if [ "$DO_STOW" -eq 1 ]; then
       "$REPO/claude-code/apply-settings.sh" | sed 's/^/  /'
     fi
   fi
+
+  say "Installing herdr plugins"
+  install_herdr_plugins
 
   say "Done. Restart your shell."
 
