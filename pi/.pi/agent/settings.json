@@ -2,7 +2,7 @@
   "defaultModel": "kimi-k3:cloud",
   "defaultProvider": "ollama",
   "defaultThinkingLevel": "medium",
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "1.1.0",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
@@ -46,5 +46,8 @@
   "terminal": {
     "showTerminalProgress": true
   },
-  "theme": "catppuccin-macchiato"
+  "theme": "catppuccin-macchiato",
+  "extensions": [
+    "-builtin:mcp"
+  ]
 }
