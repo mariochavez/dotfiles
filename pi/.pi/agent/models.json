@@ -113,41 +113,8 @@
       "apiKey": "local-ai",
       "authHeader": true,
       "baseUrl": "http://127.0.0.1:8090/v1",
-      "default": "Qwen3.5-9B-MLX-4bit",
+      "default": "Ornith-1.0-35B-5bit-mlx",
       "models": [
-        {
-          "contextWindow": 262144,
-          "cost": {
-            "cacheRead": 0,
-            "cacheWrite": 0,
-            "input": 0,
-            "output": 0
-          },
-          "id": "Qwen3.5-9B-MLX-4bit",
-          "input": [
-            "text",
-            "image"
-          ],
-          "maxTokens": 32768,
-          "name": "Qwen3.5-9B-MLX-4bit",
-          "reasoning": false
-        },
-        {
-          "contextWindow": 262144,
-          "cost": {
-            "cacheRead": 0,
-            "cacheWrite": 0,
-            "input": 0,
-            "output": 0
-          },
-          "id": "Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
-          "input": [
-            "text"
-          ],
-          "maxTokens": 32768,
-          "name": "Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
-          "reasoning": false
-        },
         {
           "contextWindow": 262144,
           "cost": {
@@ -164,6 +131,22 @@
           "maxTokens": 32768,
           "name": "Ornith 35b",
           "reasoning": true
+        },
+        {
+          "contextWindow": 262144,
+          "cost": {
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "input": 0,
+            "output": 0
+          },
+          "id": "Qwen3.8-27B-oQ4e-mtp",
+          "input": [
+            "text"
+          ],
+          "maxTokens": 32768,
+          "name": "Qwen3.8-27B-oQ4e-mtp",
+          "reasoning": false
         }
       ]
     }
