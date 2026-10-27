@@ -9,6 +9,7 @@ compile = false
 [tools]
 codex = "latest"
 gh = "latest"
+"github:basecamp/hey-cli" = "latest"
 node = "lts"
 pi = "latest"
 pipx = "latest"
