@@ -219,6 +219,15 @@ if [ "$DO_STOW" -eq 1 ]; then
     run stow --target="$HOME" ${stow_flags[@]+"${stow_flags[@]}"} "$pkg"
   done
 
+  # settings.json runs ~/.claude/hooks/herdr-agent-state.sh on SessionStart,
+  # but that script comes from herdr, not this repo. Without it every session
+  # starts with a "No such file or directory" hook error. Install it before
+  # apply-settings.sh, which then replaces the duplicate hook entry herdr adds.
+  if command -v herdr >/dev/null 2>&1 && [ ! -f "$HOME/.claude/hooks/herdr-agent-state.sh" ]; then
+    say "Installing herdr's Claude Code integration"
+    run herdr integration install claude
+  fi
+
   # Claude Code's settings.json is not stowed: the app rewrites it in place, so
   # a symlink would dirty this repo on every edit and could be clobbered
   # outright. The repo asserts its keys over the local file instead.

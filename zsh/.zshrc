@@ -52,8 +52,13 @@ setopt HIST_REDUCE_BLANKS     # Remove unnecessary blanks
 export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.cargo/bin:$PATH"
 
 if [[ -n $IS_MACOS ]]; then
-  # Add Homebrew to path
-  export PATH="/opt/homebrew/bin:$PATH"
+  # Add Homebrew to path. Prefer a per-user install in ~/homebrew (used when
+  # /opt/homebrew belongs to another account on a shared Mac).
+  if [[ -x $HOME/homebrew/bin/brew ]]; then
+    eval "$($HOME/homebrew/bin/brew shellenv)"
+  elif [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 
   # Add Postgresql.app binaries to path
   export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
