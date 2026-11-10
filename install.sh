@@ -69,10 +69,22 @@ install_macos_packages() {
     return 1
   fi
 
-  run brew install \
-    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi jq mise \
-    zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font \
+  local packages=(
+    git lazygit starship fzf fd eza bat zoxide neovim tmux yazi jq mise
+    zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font
     maquina-app/tap/equipr maquina-app/tap/recuerd0
+  )
+
+  # The ghostty cask refuses to install over a Ghostty.app that came from the
+  # DMG, and that failure aborts the whole script under `set -e`. Leave an
+  # app brew doesn't manage alone.
+  if [ -d /Applications/Ghostty.app ] && ! brew list --cask ghostty >/dev/null 2>&1; then
+    say "Ghostty.app is already installed outside Homebrew — skipping the cask"
+  else
+    packages+=(ghostty)
+  fi
+
+  run brew install "${packages[@]}"
 }
 
 install_arch_packages() {
