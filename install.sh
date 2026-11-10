@@ -70,7 +70,7 @@ install_macos_packages() {
   fi
 
   run brew install \
-    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi jq \
+    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi jq mise \
     zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font
 }
 
@@ -79,7 +79,7 @@ install_arch_packages() {
   # that a stock Omarchy install is missing are the two zsh plugins and the
   # Meslo Nerd Font this config asks for.
   local packages=(
-    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi stow jq
+    git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi stow jq mise
     zsh zsh-autosuggestions zsh-syntax-highlighting ttf-meslo-nerd wl-clipboard
   )
 
