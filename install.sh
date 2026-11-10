@@ -71,7 +71,8 @@ install_macos_packages() {
 
   run brew install \
     git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi jq mise \
-    zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font
+    zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font \
+    maquina-app/tap/equipr maquina-app/tap/recuerd0
 }
 
 install_arch_packages() {
@@ -98,6 +99,22 @@ if [ "$DO_PACKAGES" -eq 1 ]; then
     install_arch_packages
   else
     warn "Not macOS or Arch — install the tools listed in README.md by hand"
+  fi
+
+  # maquina tools: brew installs them on macOS; elsewhere use their release
+  # installer (checksum-verified, lands in /usr/local/bin or ~/.local/bin).
+  if [ "$OS" = linux ]; then
+    for tool in equipr:equipr recuerd0:recuerd0-cli; do
+      bin="${tool%%:*}" repo="${tool#*:}"
+      if ! command -v "$bin" >/dev/null 2>&1; then
+        say "Installing $bin"
+        if [ "$DRY_RUN" -eq 1 ]; then
+          echo "  would run: curl -fsSL https://github.com/maquina-app/$repo/releases/latest/download/install.sh | sh"
+        else
+          curl -fsSL "https://github.com/maquina-app/$repo/releases/latest/download/install.sh" | sh
+        fi
+      fi
+    done
   fi
 
   # herdr has its own installer on every platform.

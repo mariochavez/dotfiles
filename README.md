@@ -22,6 +22,8 @@ These dotfiles are my base configuration for the following tools.
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 - [stow](https://www.gnu.org/software/stow/)
+- [equipr](https://github.com/maquina-app/equipr)
+- [recuerd0](https://github.com/maquina-app/recuerd0-cli)
 
 Tools that support color scheme is using a [catppuccin](https://github.com/catppuccin/catppuccin) theme.
 
@@ -64,12 +66,20 @@ Close your terminal, open Ghostty, and you should be ready.
 ```bash
 # macOS
 brew install git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi \
-  zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font
+  zsh-autosuggestions zsh-syntax-highlighting stow font-meslo-lg-nerd-font \
+  maquina-app/tap/equipr maquina-app/tap/recuerd0
 
 # Omarchy / Arch — most of this ships with Omarchy; only the two zsh plugins
 # and the Nerd Font are actually missing from a stock install
 omarchy pkg add git lazygit ghostty starship fzf fd eza bat zoxide neovim tmux yazi \
   stow zsh zsh-autosuggestions zsh-syntax-highlighting ttf-meslo-nerd wl-clipboard
+```
+
+On Linux, equipr and recuerd0 come from their release installers:
+
+```bash
+curl -fsSL https://github.com/maquina-app/equipr/releases/latest/download/install.sh | sh
+curl -fsSL https://github.com/maquina-app/recuerd0-cli/releases/latest/download/install.sh | sh
 ```
 
 herdr has its own installer on both platforms.
